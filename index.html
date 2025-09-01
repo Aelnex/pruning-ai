@@ -743,14 +743,219 @@
         let currentImage = null;
         let analysisData = null;
         
-        // จำลองข้อมูลพืชไทย
+        // ข้อมูลพืชไทยที่ครอบคลุม
         const plantDatabase = {
             'มะม่วง': {
                 name: 'มะม่วง',
                 season: 'ตัดแต่งช่วงเดือนกุมภาพันธ์-มีนาคม หลังเก็บผลผลิต',
                 technique: 'ตัดกิ่งที่แก่เก็บ กิ่งที่เจริญเติบโตผิดทิศทาง และกิ่งที่ติดเชื้อรา',
-                benefits: 'เพิ่มการแตกยอด ลดโรคพืช เพิ่มผลผลิต'
+                benefits: 'เพิ่มการแตกยอด ลดโรคพืช เพิ่มผลผลิต',
+                cutPoints: [
+                    { x: 0.3, y: 0.4, desc: 'ตัดกิ่งแก่ที่เหี่ยวเฉา' },
+                    { x: 0.6, y: 0.3, desc: 'ตัดกิ่งที่แตกผิดทิศทาง' },
+                    { x: 0.8, y: 0.5, desc: 'ตัดยอดเพื่อกระตุ้นการแตกใหม่' }
+                ]
             },
             'ส้ม': {
-                name: 'ส้ม',
-                season: 'ตัดแ
+                name: 'ส้ม/ส้มโอ',
+                season: 'ตัดแต่งช่วงเดือนมกราคม-กุมภาพันธ์',
+                technique: 'ตัดกิ่งที่โค้งงอ กิ่งที่ใกล้ดิน และยอดอ่อนส่วนเกิน',
+                benefits: 'ผลใหญ่ขึ้น รสชาติหวาน ลดแมลงศัตรูพืช',
+                cutPoints: [
+                    { x: 0.25, y: 0.6, desc: 'ตัดกิ่งที่ใกล้ดิน' },
+                    { x: 0.5, y: 0.2, desc: 'ตัดยอดส่วนเกิน' },
+                    { x: 0.75, y: 0.4, desc: 'ตัดกิ่งที่หนาแน่นเกินไป' }
+                ]
+            },
+            'กล้วย': {
+                name: 'กล้วย',
+                season: 'ตัดได้ตลอดปี หลังเก็บผลผลิต',
+                technique: 'ตัดลำต้นที่ให้ผลแล้ว เหลือหน่อใหม่ 1-2 หน่อ',
+                benefits: 'ผลผลิตต่อเนื่อง ลำต้นแข็งแรง',
+                cutPoints: [
+                    { x: 0.4, y: 0.8, desc: 'ตัดลำต้นเก่าใกล้โคนดิน' },
+                    { x: 0.6, y: 0.5, desc: 'เลือกหน่อใหม่ที่แข็งแรง' }
+                ]
+            }
+        };
+        
+        // ฟังก์ชันจำลองการวิเคราะห์ AI
+        function simulateAIAnalysis(imageElement) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // สุ่มเลือกพืชจากฐานข้อมูล
+                    const plants = Object.keys(plantDatabase);
+                    const randomPlant = plants[Math.floor(Math.random() * plants.length)];
+                    const plantInfo = plantDatabase[randomPlant];
+                    
+                    // สร้างผลการวิเคราะห์
+                    const analysis = {
+                        plantType: plantInfo.name,
+                        confidence: Math.floor(Math.random() * 20) + 80, // 80-99%
+                        health: ['ดีมาก', 'ดี', 'ปานกลาง'][Math.floor(Math.random() * 3)],
+                        season: plantInfo.season,
+                        technique: plantInfo.technique,
+                        benefits: plantInfo.benefits,
+                        cutPoints: plantInfo.cutPoints,
+                        recommendations: [
+                            'ใช้เครื่องมือที่คมและสะอาด',
+                            'ตัดในวันที่อากาศแห้ง',
+                            'ทาน้ำมันก๊าดที่แผลตัดเพื่อป้องกันเชื้อรา',
+                            'รดน้ำและใส่ปุ๋ยหลังตัดแต่ง 7 วัน'
+                        ]
+                    };
+                    resolve(analysis);
+                }, 3000); // รอ 3 วินาที เพื่อจำลองการประมวลผล
+            });
+        }
+        
+        // ฟังก์ชันวาดจุดตัดบนภาพ
+        function drawCutPoints(canvas, image, cutPoints) {
+            const ctx = canvas.getContext('2d');
+            
+            // ตั้งค่าขนาด canvas ให้เท่ากับรูปภาพ
+            const aspectRatio = image.naturalWidth / image.naturalHeight;
+            canvas.width = 600;
+            canvas.height = 600 / aspectRatio;
+            
+            // วาดรูปภาพ
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            
+            // วาดจุดตัด
+            cutPoints.forEach((point, index) => {
+                const x = point.x * canvas.width;
+                const y = point.y * canvas.height;
+                
+                // วาดวงกลมสีแดง
+                ctx.beginPath();
+                ctx.arc(x, y, 15, 0, 2 * Math.PI);
+                ctx.fillStyle = '#FF4444';
+                ctx.fill();
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // วาดหมายเลข
+                ctx.font = 'bold 16px Sarabun';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.textAlign = 'center';
+                ctx.fillText(index + 1, x, y + 5);
+                
+                // วาดเส้นชี้
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + 40, y - 40);
+                ctx.strokeStyle = '#FF4444';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // วาดกล่องข้อความ
+                const text = `จุดที่ ${index + 1}`;
+                ctx.fillStyle = 'rgba(255, 68, 68, 0.9)';
+                ctx.fillRect(x + 35, y - 55, 80, 25);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 12px Sarabun';
+                ctx.fillText(text, x + 75, y - 38);
+            });
+        }
+        
+        // จัดการการอัพโหลดไฟล์
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('previewImage');
+                img.src = e.target.result;
+                currentImage = img;
+                
+                // แสดงภาพตัวอย่าง
+                document.getElementById('previewContainer').style.display = 'block';
+                document.getElementById('analyzeBtn').style.display = 'block';
+                
+                // ซ่อนผลการวิเคราะห์เก่า
+                document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('canvasContainer').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // ฟังก์ชันวิเคราะห์
+        async function analyzeImage() {
+            if (!currentImage) return;
+            
+            // แสดงหน้าโหลด
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            try {
+                // เรียกใช้ AI วิเคราะห์
+                analysisData = await simulateAIAnalysis(currentImage);
+                
+                // แสดงผลการวิเคราะห์
+                displayAnalysisResults(analysisData);
+                
+                // วาดจุดตัดบนภาพ
+                const canvas = document.getElementById('resultCanvas');
+                drawCutPoints(canvas, currentImage, analysisData.cutPoints);
+                
+                // แสดงภาพผลลัพธ์
+                document.getElementById('canvasContainer').style.display = 'block';
+                
+            } catch (error) {
+                alert('เกิดข้อผิดพลาดในการวิเคราะห์ กรุณาลองใหม่');
+            } finally {
+                document.getElementById('loadingSection').style.display = 'none';
+            }
+        }
+        
+        // แสดงผลการวิเคราะห์
+        function displayAnalysisResults(data) {
+            // แสดงข้อมูลพืช
+            document.getElementById('plantAnalysis').innerHTML = `
+                <strong>ชนิดพืช:</strong> ${data.plantType} (ความแม่นยำ ${data.confidence}%)<br>
+                <strong>สุขภาพพืช:</strong> ${data.health}<br>
+                <strong>สภาพทั่วไป:</strong> เหมาะสมสำหรับการตัดแต่ง
+            `;
+            
+            // แสดงจุดตัด
+            let cutPointsHtml = '';
+            data.cutPoints.forEach((point, index) => {
+                cutPointsHtml += `
+                    <div class="cut-point">
+                        <div class="cut-point-header">
+                            <div class="cut-point-number">${index + 1}</div>
+                            <div class="cut-point-title">จุดตัดที่ ${index + 1}</div>
+                        </div>
+                        <div class="cut-point-desc">${point.desc}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('cutPoints').innerHTML = cutPointsHtml;
+            
+            // แสดงคำแนะนำเวลา
+            document.getElementById('timingAdvice').innerHTML = `
+                <strong>ช่วงเวลาที่เหมาะสม:</strong> ${data.season}<br>
+                <strong>เทคนิค:</strong> ${data.technique}<br>
+                <strong>ประโยชน์:</strong> ${data.benefits}
+            `;
+            
+            // แสดงคำแนะนำเพิ่มเติม
+            let recommendationsHtml = '<div style="margin-top: 20px;"><strong>คำแนะนำเพิ่มเติม:</strong><ul>';
+            data.recommendations.forEach(rec => {
+                recommendationsHtml += `<li style="margin: 8px 0; color: #555;">${rec}</li>`;
+            });
+            recommendationsHtml += '</ul></div>';
+            document.getElementById('timingAdvice').innerHTML += recommendationsHtml;
+            
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+        
+        // เชื่อมต่อ Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('cameraInput').addEventListener('change', handleFileSelect);
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            document.getElementById('analyzeBtn').addEventListener('click', analyzeImage);
+        });
+    </script>
