@@ -264,7 +264,7 @@
             <h1>🌿 สแกนพืช</h1>
             <p>ถ่ายรูป → รู้จุดตัดทันที</p>
             <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
-                ขับเคลื่อนโดย PlantNet AI • รู้จักพืช 60,000+ ชนิด
+                ขับเคลื่อนโดย PlantNet AI • รู้จักพืช 60,000+ ชนิดทั่วโลก
             </div>
         </div>
 
@@ -417,14 +417,8 @@
             try {
                 showLoading();
                 
-                // Try PlantNet API first
-                let result = null;
-                try {
-                    result = await analyzePlantNetAPI(file);
-                } catch (apiError) {
-                    console.warn('PlantNet API failed, using demo mode:', apiError);
-                    result = await analyzeDemoMode();
-                }
+                // Use only PlantNet API - no demo mode fallback
+                const result = await analyzePlantNetAPI(file);
                 
                 hideLoading();
                 showResult(result);
@@ -432,7 +426,7 @@
             } catch (error) {
                 console.error('Analysis error:', error);
                 hideLoading();
-                showError('ไม่สามารถวิเคราะห์รูปภาพได้ กรุณาลองใหม่');
+                showError(`ไม่สามารถวิเคราะห์รูปภาพได้: ${error.message}`);
             }
         }
 
@@ -451,50 +445,88 @@
             formData.append('modifiers', '["crops","flowers","fruits","barks","leaves"]');
             formData.append('plant-identification', 'true');
 
-            const projects = ['weurope', 'k-world-flora', 'the-plant-list'];
+            // Use multiple approaches to handle CORS
+            const corsProxies = [
+                '', // Direct call first
+                'https://api.allorigins.win/raw?url=',
+                'https://corsproxy.io/?'
+            ];
+
+            const projects = ['k-world-flora', 'weurope', 'the-plant-list'];
             
             for (const project of projects) {
-                try {
-                    updateLoadingText(`ค้นหาในฐานข้อมูล ${project.toUpperCase()}...`);
-                    
-                    const response = await fetch(`https://my-api.plantnet.org/v1/identify/${project}?api-key=${PLANTNET_API_KEY}`, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`API Error: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    
-                    if (data.results && data.results.length > 0) {
-                        const topResult = data.results[0];
-                        const species = topResult.species;
+                for (const proxy of corsProxies) {
+                    try {
+                        updateLoadingText(`ค้นหาในฐานข้อมูล ${project.toUpperCase()}...`);
                         
-                        updateLoadingText('พบข้อมูลพืช! กำลังวิเคราะห์จุดตัด...');
+                        const baseUrl = `https://my-api.plantnet.org/v1/identify/${project}?api-key=${PLANTNET_API_KEY}`;
+                        const url = proxy ? `${proxy}${encodeURIComponent(baseUrl)}` : baseUrl;
                         
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                        
-                        return {
-                            isReal: true,
-                            name: species.commonNames && species.commonNames.length > 0 
-                                ? species.commonNames[0] 
-                                : species.scientificNameWithoutAuthor,
-                            scientificName: species.scientificNameWithoutAuthor,
-                            confidence: Math.round(topResult.score * 100),
-                            genus: species.genus?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                            family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                            source: `PlantNet ${project.toUpperCase()}`
+                        const fetchOptions = {
+                            method: 'POST',
+                            body: formData,
+                            headers: proxy ? {} : {
+                                'Accept': 'application/json'
+                            }
                         };
+
+                        // Add CORS headers if not using proxy
+                        if (!proxy) {
+                            fetchOptions.mode = 'cors';
+                            fetchOptions.credentials = 'omit';
+                        }
+
+                        const response = await fetch(url, fetchOptions);
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error(`API Error ${response.status} with ${proxy ? 'proxy' : 'direct'}:`, errorText);
+                            
+                            if (response.status === 401) {
+                                throw new Error('API Key ไม่ถูกต้องหรือหมดอายุ กรุณาตรวจสอบ API Key');
+                            } else if (response.status === 403) {
+                                console.warn('CORS blocked, trying next method...');
+                                continue; // Try next proxy/method
+                            } else if (response.status === 429) {
+                                throw new Error('ใช้งาน API เกินจำนวนที่กำหนดต่อวัน กรุณาลองใหม่พรุ่งนี้');
+                            }
+                            continue;
+                        }
+
+                        const data = await response.json();
+                        console.log(`API Success from ${project} via ${proxy ? 'proxy' : 'direct'}:`, data);
+                        
+                        if (data.results && data.results.length > 0) {
+                            const topResult = data.results[0];
+                            const species = topResult.species;
+                            
+                            updateLoadingText('พบข้อมูลพืช! กำลังวิเคราะห์จุดตัด...');
+                            
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            
+                            return {
+                                isReal: true,
+                                name: species.commonNames && species.commonNames.length > 0 
+                                    ? species.commonNames[0] 
+                                    : species.scientificNameWithoutAuthor,
+                                scientificName: species.scientificNameWithoutAuthor,
+                                confidence: Math.round(topResult.score * 100),
+                                genus: species.genus?.scientificNameWithoutAuthor || 'ไม่ทราบ',
+                                family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ',
+                                source: `PlantNet ${project.toUpperCase()}`
+                            };
+                        }
+                    } catch (error) {
+                        console.log(`Failed ${project} with ${proxy ? 'proxy' : 'direct'}:`, error);
+                        if (error.message.includes('API Key') || error.message.includes('เกินจำนวน')) {
+                            throw error; // Re-throw API-specific errors
+                        }
+                        continue; // Try next combination
                     }
-                } catch (error) {
-                    console.log(`Failed to search in ${project}:`, error);
-                    continue;
                 }
             }
             
-            throw new Error('ไม่พบข้อมูลพืชนี้ในฐานข้อมูล PlantNet');
+            throw new Error('ไม่พบข้อมูลพืชนี้ในฐานข้อมูล PlantNet หรือมีปัญหาการเชื่อมต่อ CORS กรุณาตรวจสอบการตั้งค่า API Key ใน PlantNet และเพิ่ม https://aelnex.github.io ใน Authorized domains');
         }
 
         async function analyzeDemoMode() {
