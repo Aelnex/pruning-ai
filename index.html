@@ -26,9 +26,59 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%);
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%);
             z-index: -1;
+            animation: gradientShift 15s ease-in-out infinite;
         }
+
+        /* Animated Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: particleFloat 20s infinite linear;
+        }
+
+        /* Floating Leaves Background */
+        .floating-leaves {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .leaf {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.15;
+            animation: leafFall 15s infinite linear;
+        }
+
+        .leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 18s; }
+        .leaf:nth-child(2) { left: 20%; animation-delay: 3s; animation-duration: 22s; }
+        .leaf:nth-child(3) { left: 35%; animation-delay: 5s; animation-duration: 20s; }
+        .leaf:nth-child(4) { left: 50%; animation-delay: 7s; animation-duration: 25s; }
+        .leaf:nth-child(5) { left: 65%; animation-delay: 10s; animation-duration: 19s; }
+        .leaf:nth-child(6) { left: 80%; animation-delay: 2s; animation-duration: 23s; }
+        .leaf:nth-child(7) { left: 90%; animation-delay: 8s; animation-duration: 21s; }
 
         .container {
             max-width: 500px;
@@ -44,7 +94,20 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.2);
             margin-bottom: 30px;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeInDown 1s ease-out, floatAnimation 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
         }
 
         .hero-logo {
@@ -112,11 +175,18 @@
             margin-bottom: 12px;
             transition: all 0.3s ease;
             border-left: 4px solid #4caf50;
+            animation: slideInLeft 0.6s ease-out;
+            animation-fill-mode: both;
         }
 
+        .guide-step:nth-child(1) { animation-delay: 0.1s; }
+        .guide-step:nth-child(2) { animation-delay: 0.2s; }
+        .guide-step:nth-child(3) { animation-delay: 0.3s; }
+
         .guide-step:hover {
-            transform: translateX(5px);
+            transform: translateX(10px) scale(1.02);
             background: rgba(255,255,255,0.15);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.3);
         }
 
         .guide-step-number {
@@ -152,11 +222,25 @@
             padding: 15px;
             background: rgba(255,255,255,0.1);
             border-radius: 12px;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
         }
 
         .stats-item:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
         }
 
         .stats-value {
@@ -167,6 +251,9 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             display: block;
+            position: relative;
+            z-index: 1;
+            animation: numberPulse 2s ease-in-out infinite;
         }
 
         .stats-label {
@@ -197,6 +284,24 @@
             height: 140px;
             font-size: 1.6em;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .camera-button::before {
+            content: '🌿';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            opacity: 0.2;
+            animation: swayLeaf 3s ease-in-out infinite;
+        }
+
+        .camera-button span {
+            position: relative;
+            z-index: 1;
+            animation: textBounce 2s ease-in-out infinite;
         }
 
         .gallery-button {
@@ -204,11 +309,29 @@
             color: white;
             border: 2px solid rgba(255,255,255,0.3);
             height: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
         }
 
         .camera-button:hover, .gallery-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.02);
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .camera-button:active, .gallery-button:active {
+            transform: translateY(-2px) scale(0.98);
+            transition: transform 0.1s;
         }
 
         .camera-button:disabled, .gallery-button:disabled {
@@ -465,52 +588,120 @@
             display: none;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes gradientShift {
+            0%, 100% { 
+                background: 
+                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%);
+            }
+            33% { 
+                background: 
+                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%);
+            }
+            66% { 
+                background: 
+                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%);
+            }
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes leafFall {
+            0% {
+                transform: translateY(-100px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+                transform: translateY(90vh) translateX(10px) scale(1);
+            }
+            90% {
+                opacity: 0.4;
+                transform: translateY(10vh) translateX(-10px) scale(1);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(0) scale(0);
+                opacity: 0;
+            }
         }
 
-        @keyframes slideUpResult {
-            from { opacity: 0; transform: translateY(50px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.98); }
+        @keyframes swayLeaf {
+            0%, 100% { transform: rotate(-5deg) translateX(0); }
+            50% { transform: rotate(5deg) translateX(10px); }
         }
 
-        @keyframes bounceRotate {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-10px) rotate(5deg) scale(1.05); }
-            50% { transform: translateY(0) rotate(0deg) scale(1); }
-            75% { transform: translateY(-5px) rotate(-5deg) scale(1.02); }
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        @keyframes pulse-highlight {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
-            50% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes textBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(76, 175, 80, 0.8),
+                           0 0 60px rgba(76, 175, 80, 0.4);
+            }
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-5px) translateY(-5px); }
+            50% { transform: translateX(5px) translateY(-3px); }
+            75% { transform: translateX(-3px) translateY(5px); }
+            100% { transform: translateX(0) translateY(0); }
         }
 
         @media (max-width: 480px) {
@@ -527,6 +718,27 @@
     </style>
 </head>
 <body>
+    <!-- Animated Background Elements -->
+    <div class="particles">
+        <div class="particle" style="width: 4px; height: 4px; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 3px; height: 3px; left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 5px; height: 5px; left: 35%; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 2px; height: 2px; left: 50%; animation-delay: 1s;"></div>
+        <div class="particle" style="width: 4px; height: 4px; left: 65%; animation-delay: 3s;"></div>
+        <div class="particle" style="width: 3px; height: 3px; left: 80%; animation-delay: 5s;"></div>
+        <div class="particle" style="width: 5px; height: 5px; left: 90%; animation-delay: 6s;"></div>
+    </div>
+
+    <div class="floating-leaves">
+        <div class="leaf">🍃</div>
+        <div class="leaf">🌿</div>
+        <div class="leaf">🍀</div>
+        <div class="leaf">🌱</div>
+        <div class="leaf">🌾</div>
+        <div class="leaf">🍂</div>
+        <div class="leaf">🌳</div>
+    </div>
+
     <div class="container">
         <div class="hero">
             <div class="hero-logo">🌱</div>
