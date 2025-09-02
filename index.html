@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สแกนพืช - รู้จุดตัดทันที</title>
     <style>
+        /* CSS เหมือนเดิม */
         * {
             margin: 0;
             padding: 0;
@@ -246,11 +247,11 @@
             body {
                 padding: 15px;
             }
-            
+
             .header h1 {
                 font-size: 1.8em;
             }
-            
+
             .camera-button {
                 height: 100px;
                 font-size: 1.3em;
@@ -264,7 +265,7 @@
             <h1>🌿 สแกนพืช</h1>
             <p>ถ่ายรูป → รู้จุดตัดทันที</p>
             <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
-                ขับเคลื่อนโดย PlantNet AI • รู้จักพืช 60,000+ ชนิดทั่วโลก
+                ขับเคลื่อนโดย PlantNet AI • รู้จักพืช 60,000+ ชนิด
             </div>
         </div>
 
@@ -289,7 +290,7 @@
 
         <div id="result" class="result">
             <img id="resultImage" class="result-image">
-            
+
             <div class="plant-info">
                 <div class="plant-name" id="plantName">🌱 ชื่อพืช</div>
                 <span class="confidence" id="confidence">95%</span>
@@ -310,119 +311,57 @@
     </div>
 
     <script>
-        // API Key สำหรับ PlantNet (ฝังในโค้ด)
+        // API Key สำหรับ PlantNet 
         const PLANTNET_API_KEY = '2b10fVqZpXS2cvXW6EyaPHqJu';
-        
-        // Global error handling
-        window.addEventListener('error', function(e) {
-            console.error('Global error:', e.error);
-            hideLoading();
-            showError('เกิดข้อผิดพลาดทั่วไป กรุณาลองใหม่');
-        });
 
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('Unhandled promise rejection:', e.reason);
-            hideLoading();
-            showError('เกิดข้อผิดพลาดในการเชื่อมต่อ');
-        });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoInput = document.getElementById('photoInput');
+            const galleryInput = document.getElementById('galleryInput');
 
-        // Event listeners - Safe DOM ready check
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
-
-        function initializeApp() {
-            try {
-                // Safe element binding
-                const photoInput = document.getElementById('photoInput');
-                const galleryInput = document.getElementById('galleryInput');
-                
-                if (photoInput) {
-                    photoInput.addEventListener('change', handlePhoto);
-                }
-                if (galleryInput) {
-                    galleryInput.addEventListener('change', handlePhoto);
-                }
-            } catch (error) {
-                console.error('Initialization error:', error);
+            if (photoInput) {
+                photoInput.addEventListener('change', handlePhoto);
             }
-        }
+            if (galleryInput) {
+                galleryInput.addEventListener('change', handlePhoto);
+            }
+        });
 
         function takePhoto() {
-            try {
-                const input = document.getElementById('photoInput');
-                if (input) {
-                    input.click();
-                } else {
-                    throw new Error('Photo input not found');
-                }
-            } catch (error) {
-                console.error('Take photo error:', error);
-                showError('ไม่สามารถเปิดกล้องได้');
-            }
+            document.getElementById('photoInput').click();
         }
 
         function selectFromGallery() {
-            try {
-                const input = document.getElementById('galleryInput');
-                if (input) {
-                    input.click();
-                } else {
-                    throw new Error('Gallery input not found');
-                }
-            } catch (error) {
-                console.error('Select gallery error:', error);
-                showError('ไม่สามารถเปิดแกลเลอรีได้');
-            }
+            document.getElementById('galleryInput').click();
         }
 
         function handlePhoto(event) {
-            try {
-                const file = event.target.files[0];
-                if (!file) return;
+            const file = event.target.files[0];
+            if (!file) return;
 
-                if (!file.type.startsWith('image/')) {
-                    showError('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
-                    return;
-                }
-
-                // Show preview safely
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const img = document.getElementById('resultImage');
-                        if (img) {
-                            img.src = e.target.result;
-                        }
-                    } catch (error) {
-                        console.error('Image preview error:', error);
-                    }
-                };
-                reader.onerror = function() {
-                    showError('ไม่สามารถอ่านไฟล์รูปภาพได้');
-                };
-                reader.readAsDataURL(file);
-
-                // Start analysis
-                analyzePhoto(file);
-            } catch (error) {
-                console.error('Handle photo error:', error);
-                showError('เกิดข้อผิดพลาดในการอัพโหลดรูป');
+            if (!file.type.startsWith('image/')) {
+                showError('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+                return;
             }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('resultImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Start analysis
+            analyzePhoto(file);
         }
 
         async function analyzePhoto(file) {
+            showLoading();
+
             try {
-                showLoading();
-                
-                // Use only PlantNet API - no demo mode fallback
                 const result = await analyzePlantNetAPI(file);
-                
                 hideLoading();
                 showResult(result);
-                
             } catch (error) {
                 console.error('Analysis error:', error);
                 hideLoading();
@@ -432,412 +371,142 @@
 
         async function analyzePlantNetAPI(file) {
             const updateLoadingText = (text) => {
-                const loadingTextEl = document.getElementById('loadingText');
-                if (loadingTextEl) {
-                    loadingTextEl.textContent = text;
-                }
+                const el = document.getElementById('loadingText');
+                if (el) el.textContent = text;
             };
 
             updateLoadingText('เชื่อมต่อ PlantNet AI...');
-            
+
             const formData = new FormData();
             formData.append('images', file);
-            formData.append('modifiers', '["crops","flowers","fruits","barks","leaves"]');
-            formData.append('plant-identification', 'true');
+            formData.append('organs', 'auto');
 
-            // Use multiple approaches to handle CORS
-            const corsProxies = [
-                '', // Direct call first
-                'https://api.allorigins.win/raw?url=',
-                'https://corsproxy.io/?'
-            ];
+            // ลองหลาย project เพื่อความแม่นยำ
+            const projects = ['all', 'useful-plants', 'weurope'];
 
-            const projects = ['k-world-flora', 'weurope', 'the-plant-list'];
-            
             for (const project of projects) {
-                for (const proxy of corsProxies) {
-                    try {
-                        updateLoadingText(`ค้นหาในฐานข้อมูล ${project.toUpperCase()}...`);
-                        
-                        const baseUrl = `https://my-api.plantnet.org/v1/identify/${project}?api-key=${PLANTNET_API_KEY}`;
-                        const url = proxy ? `${proxy}${encodeURIComponent(baseUrl)}` : baseUrl;
-                        
-                        const fetchOptions = {
-                            method: 'POST',
-                            body: formData,
-                            headers: proxy ? {} : {
-                                'Accept': 'application/json'
-                            }
-                        };
+                try {
+                    updateLoadingText(`ค้นหาในฐานข้อมูล ${project}...`);
 
-                        // Add CORS headers if not using proxy
-                        if (!proxy) {
-                            fetchOptions.mode = 'cors';
-                            fetchOptions.credentials = 'omit';
-                        }
+                    // ใช้ CORS proxy
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    const apiUrl = `https://my-api.plantnet.org/v2/identify/${project}?api-key=${PLANTNET_API_KEY}`;
+                    
+                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
+                        method: 'POST',
+                        body: formData
+                    });
 
-                        const response = await fetch(url, fetchOptions);
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error(`API Error ${response.status} with ${proxy ? 'proxy' : 'direct'}:`, errorText);
-                            
-                            if (response.status === 401) {
-                                throw new Error('API Key ไม่ถูกต้องหรือหมดอายุ กรุณาตรวจสอบ API Key');
-                            } else if (response.status === 403) {
-                                console.warn('CORS blocked, trying next method...');
-                                continue; // Try next proxy/method
-                            } else if (response.status === 429) {
-                                throw new Error('ใช้งาน API เกินจำนวนที่กำหนดต่อวัน กรุณาลองใหม่พรุ่งนี้');
-                            }
-                            continue;
-                        }
-
-                        const data = await response.json();
-                        console.log(`API Success from ${project} via ${proxy ? 'proxy' : 'direct'}:`, data);
-                        
-                        if (data.results && data.results.length > 0) {
-                            const topResult = data.results[0];
-                            const species = topResult.species;
-                            
-                            updateLoadingText('พบข้อมูลพืช! กำลังวิเคราะห์จุดตัด...');
-                            
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-                            
-                            return {
-                                isReal: true,
-                                name: species.commonNames && species.commonNames.length > 0 
-                                    ? species.commonNames[0] 
-                                    : species.scientificNameWithoutAuthor,
-                                scientificName: species.scientificNameWithoutAuthor,
-                                confidence: Math.round(topResult.score * 100),
-                                genus: species.genus?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                                family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                                source: `PlantNet ${project.toUpperCase()}`
-                            };
-                        }
-                    } catch (error) {
-                        console.log(`Failed ${project} with ${proxy ? 'proxy' : 'direct'}:`, error);
-                        if (error.message.includes('API Key') || error.message.includes('เกินจำนวน')) {
-                            throw error; // Re-throw API-specific errors
-                        }
-                        continue; // Try next combination
+                    if (!response.ok) {
+                        console.log(`Failed ${project}: ${response.status}`);
+                        continue;
                     }
+
+                    const data = await response.json();
+
+                    if (data.results && data.results.length > 0) {
+                        const topResult = data.results[0];
+                        const species = topResult.species;
+
+                        return {
+                            name: species.commonNames && species.commonNames.length > 0 
+                                ? species.commonNames[0] 
+                                : species.scientificNameWithoutAuthor,
+                            scientificName: species.scientificNameWithoutAuthor,
+                            confidence: Math.round(topResult.score * 100),
+                            genus: species.genus?.scientificNameWithoutAuthor || 'ไม่ทราบ',
+                            family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ'
+                        };
+                    }
+                } catch (error) {
+                    console.log(`Error with ${project}:`, error);
+                    continue;
                 }
             }
-            
-            throw new Error('ไม่พบข้อมูลพืชนี้ในฐานข้อมูล PlantNet หรือมีปัญหาการเชื่อมต่อ CORS กรุณาตรวจสอบการตั้งค่า API Key ใน PlantNet และเพิ่ม https://aelnex.github.io ใน Authorized domains');
-        }
 
-        async function analyzeDemoMode() {
-            const updateLoadingText = (text) => {
-                const loadingTextEl = document.getElementById('loadingText');
-                if (loadingTextEl) {
-                    loadingTextEl.textContent = text;
-                }
-            };
-
-            updateLoadingText('ใช้โหมด Demo...');
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            const demoPlants = [
-                {
-                    isReal: false,
-                    name: 'มะม่วงน้ำดอกไม้',
-                    scientificName: 'Mangifera indica',
-                    confidence: 92,
-                    genus: 'Mangifera',
-                    family: 'Anacardiaceae',
-                    source: 'Demo Mode'
-                },
-                {
-                    isReal: false,
-                    name: 'กล้วยไข่',
-                    scientificName: 'Musa acuminata',
-                    confidence: 89,
-                    genus: 'Musa',
-                    family: 'Musaceae',
-                    source: 'Demo Mode'
-                },
-                {
-                    isReal: false,
-                    name: 'มะละกอ',
-                    scientificName: 'Carica papaya',
-                    confidence: 94,
-                    genus: 'Carica',
-                    family: 'Caricaceae',
-                    source: 'Demo Mode'
-                }
-            ];
-            
-            return demoPlants[Math.floor(Math.random() * demoPlants.length)];
+            throw new Error('ไม่พบข้อมูลพืชในฐานข้อมูล กรุณาถ่ายรูปให้ชัดขึ้น');
         }
 
         function showLoading() {
-            try {
-                const loading = document.getElementById('loading');
-                const result = document.getElementById('result');
-                
-                if (loading) {
-                    loading.classList.add('show');
-                }
-                if (result) {
-                    result.classList.remove('show');
-                }
-
-                // Loading steps
-                const steps = [
-                    'กำลังประมวลผลภาพ...',
-                    'กำลังระบุชนิดพืช...',
-                    'กำลังวิเคราะห์จุดตัด...',
-                    'เกือบเสร็จแล้ว...'
-                ];
-
-                let step = 0;
-                const interval = setInterval(() => {
-                    const loadingTextEl = document.getElementById('loadingText');
-                    if (step < steps.length && loadingTextEl) {
-                        loadingTextEl.textContent = steps[step];
-                        step++;
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 750);
-            } catch (error) {
-                console.error('Show loading error:', error);
-            }
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('result').classList.remove('show');
         }
 
         function hideLoading() {
-            try {
-                const loading = document.getElementById('loading');
-                if (loading) {
-                    loading.classList.remove('show');
-                }
-            } catch (error) {
-                console.error('Hide loading error:', error);
-            }
+            document.getElementById('loading').classList.remove('show');
         }
 
         function showResult(result) {
-            try {
-                if (!result) {
-                    throw new Error('No result data');
-                }
+            // แสดงข้อมูลพืช
+            document.getElementById('plantName').innerHTML = `
+                <div>🌱 ${result.name}</div>
+                <div style="font-style: italic; color: #666; font-size: 0.9em;">${result.scientificName}</div>
+                <div style="font-size: 0.8em; color: #666;">สกุล: ${result.genus} | วงศ์: ${result.family}</div>
+            `;
+            document.getElementById('confidence').textContent = `${result.confidence}%`;
 
-                // Safe element selection
-                const plantNameEl = document.getElementById('plantName');
-                const confidenceEl = document.getElementById('confidence');
-                const cuttingPointsEl = document.getElementById('cuttingPoints');
-                const tipsTextEl = document.getElementById('tipsText');
-                const resultEl = document.getElementById('result');
+            // สร้างคำแนะนำการตัด
+            const advice = generateCuttingAdvice(result.name, result.scientificName);
+            
+            const pointsHTML = advice.points.map((point, index) => `
+                <div class="cutting-point">
+                    <div class="point-title">${index + 1}. ${point.title}</div>
+                    <div class="point-desc">${point.desc}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('cuttingPoints').innerHTML = pointsHTML;
+            document.getElementById('tipsText').textContent = advice.tips;
 
-                // Set plant info with more details
-                const plantInfo = `🌱 ${result.name}`;
-                
-                if (plantNameEl) {
-                    plantNameEl.innerHTML = `
-                        <div style="font-size: 1.4em; font-weight: 700; color: #2e7d32; margin-bottom: 5px;">
-                            ${plantInfo}
-                        </div>
-                        <div style="font-style: italic; color: #666; font-size: 0.9em; margin-bottom: 5px;">
-                            ${result.scientificName}
-                        </div>
-                        <div style="font-size: 0.8em; color: #666;">
-                            สกุล: ${result.genus} | วงศ์: ${result.family}
-                        </div>
-                    `;
-                }
-
-                if (confidenceEl) {
-                    confidenceEl.textContent = `${result.confidence}%`;
-                    confidenceEl.style.background = result.isReal ? '#4caf50' : '#ff9800';
-                }
-
-                // Add source badge
-                if (confidenceEl && confidenceEl.parentNode) {
-                    const sourceBadge = document.createElement('span');
-                    sourceBadge.style.cssText = `
-                        background: ${result.isReal ? '#2196f3' : '#ff9800'};
-                        color: white;
-                        padding: 4px 8px;
-                        border-radius: 12px;
-                        font-size: 0.8em;
-                        margin-left: 8px;
-                    `;
-                    sourceBadge.textContent = result.source;
-                    confidenceEl.parentNode.appendChild(sourceBadge);
-                }
-
-                // Generate cutting advice
-                const cuttingAdvice = generateCuttingAdvice(result.name, result.scientificName);
-                
-                if (cuttingPointsEl && cuttingAdvice.points) {
-                    const pointsHTML = cuttingAdvice.points.map((point, index) => `
-                        <div class="cutting-point">
-                            <div class="point-title">${index + 1}. ${point.title}</div>
-                            <div class="point-desc">${point.desc}</div>
-                        </div>
-                    `).join('');
-                    cuttingPointsEl.innerHTML = pointsHTML;
-                }
-
-                if (tipsTextEl && cuttingAdvice.tips) {
-                    tipsTextEl.textContent = cuttingAdvice.tips;
-                }
-
-                if (resultEl) {
-                    resultEl.classList.add('show');
-                    setTimeout(() => {
-                        resultEl.scrollIntoView({ behavior: 'smooth' });
-                    }, 300);
-                }
-
-            } catch (error) {
-                console.error('Show result error:', error);
-                showError('เกิดข้อผิดพลาดในการแสดงผล');
-            }
+            document.getElementById('result').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
         }
 
-        function generateCuttingAdvice(plantName, scientificName) {
-            try {
-                const plantFamilies = {
-                    'Mangifera': 'fruit_tree',
-                    'Citrus': 'fruit_tree', 
-                    'Carica': 'tropical_fruit',
-                    'Musa': 'banana_family',
-                    'Ficus': 'ornamental_tree',
-                    'Capsicum': 'vegetable',
-                    'Solanum': 'vegetable'
-                };
+        function generateCuttingAdvice(name, scientificName) {
+            // คำแนะนำตามชนิดพืช
+            const generalAdvice = {
+                points: [
+                    { title: 'ตัดกิ่งแห้งและเสียหาย', desc: 'กำจัดส่วนที่ตายแล้วเพื่อป้องกันโรคและแมลง' },
+                    { title: 'ตัดกิ่งที่หนาแน่นเกินไป', desc: 'เพิ่มการระบายอากาศและการรับแสง' },
+                    { title: 'ตัดกิ่งที่ขัดแย้งกัน', desc: 'ป้องกันการเสียดสีและบาดแผล' }
+                ],
+                tips: 'ตัดแต่งในช่วงที่พืชพักตัว ใช้เครื่องมือที่คมและสะอาด ทาแผลด้วยน้ำยาป้องกันเชื้อรา'
+            };
 
-                let category = 'general';
-                for (const [genus, type] of Object.entries(plantFamilies)) {
-                    if (scientificName && scientificName.includes(genus)) {
-                        category = type;
-                        break;
-                    }
-                }
-
-                const adviceMap = {
-                    fruit_tree: {
-                        points: [
-                            { title: 'ตัดกิ่งที่เจริญเติบโตขนานกับลำต้นหลัก', desc: 'กิ่งแนวตั้งจะแข่งขันกับลำต้น ควรตัดเพื่อรูปทรงที่สมดุล' },
-                            { title: 'ตัดกิ่งที่มีมุมแคบ (น้อยกว่า 45 องศา)', desc: 'กิ่งมุมแคบจะหักง่ายเมื่อมีน้ำหนักผล ควรตัดป้องกัน' },
-                            { title: 'ตัดกิ่งที่ขัดแย้งและเสียดสีกัน', desc: 'ลดการแข่งขันและป้องกันแผลจากการเสียดสี' }
-                        ],
-                        tips: 'ตัดแต่งหลังเก็บเกี่ยวเมื่อต้นไม้พักตัว หลีกเลี่ยงช่วงออกดอกติดผล ใช้เครื่องมือคมและสะอาด ทาน้ำมันก๊าดที่แผลตัด'
-                    },
-                    tropical_fruit: {
-                        points: [
-                            { title: 'ตัดใบแก่และใบเสียหายส่วนล่าง', desc: 'เพิ่มการระบายอากาศและป้องกันการสะสมของศัตรูพืช' },
-                            { title: 'ตัดกิ่งข้างที่แตกจากลำต้นหลัก', desc: 'ให้พลังงานไปสู่การผลิตผลแทนการเจริญเติบโตของกิ่ง' },
-                            { title: 'ตัดผลที่เสียหายหรือถูกโรคจู่โจม', desc: 'ป้องกันการแพร่กระจายของโรคไปยังผลอื่น' }
-                        ],
-                        tips: 'ตัดแต่งสม่ำเสมอทุก 1-2 สัปดาห์ หลีกเลี่ยงการตัดในวันฝนหรือความชื้นสูง ใช้ปูนขาวโรยแผลตัด'
-                    },
-                    banana_family: {
-                        points: [
-                            { title: 'ตัดใบที่เหลืองและแห้งเฉา', desc: 'ใบเหลืองไม่ผลิตอาหาร และเป็นแหล่งเพาะพันธุ์แมลงศัตรู' },
-                            { title: 'จำกัดจำนวนหน่อลูก', desc: 'เก็บหน่อแข็งแรง 1-2 หน่อ ตัดหน่ออ่อนแอทิ้ง' },
-                            { title: 'ตัดส่วนดอกชายที่แห้งแล้ว', desc: 'ป้องกันการเน่าเปื่อยและให้พลังงานไปเลี้ยงผล' }
-                        ],
-                        tips: 'ตัดแต่งทุก 2-3 สัปดาห์ ใช้มีดคมสะอาด หลังตัดโรยปูนขาวหรือขี้เถ้าป้องกันเชื้อโรค'
-                    },
-                    general: {
-                        points: [
-                            { title: 'ตัดกิ่งที่แห้งตายและเสียหาย', desc: 'กำจัดส่วนที่ไม่มีประโยชน์และอาจเป็นแหล่งเชื้อโรค' },
-                            { title: 'ตัดกิ่งที่หนาแน่นเกินไป', desc: 'เพิ่มการไหลเวียนของอากาศและการรับแสงแดด' },
-                            { title: 'ปรับรูปทรงให้สมดุล', desc: 'ตัดกิ่งที่เติบโตผิดทิศทางเพื่อรูปทรงที่สวยงาม' }
-                        ],
-                        tips: 'ตัดแต่งในช่วงที่ต้นไม้พักตัว หลีกเลี่ยงช่วงที่มีการเจริญเติบโตแรง ใช้เครื่องมือที่คมและสะอาด ทำความสะอาดแผลตัดด้วยน้ำยาฆ่าเชื้อ'
-                    }
-                };
-
-                return adviceMap[category] || adviceMap.general;
-            } catch (error) {
-                console.error('Generate cutting advice error:', error);
+            // ถ้าเป็นไม้ผล
+            if (scientificName && (scientificName.includes('Mangifera') || scientificName.includes('Durio') || scientificName.includes('Dimocarpus'))) {
                 return {
                     points: [
-                        { title: 'ตัดกิ่งที่แห้งตายและเสียหาย', desc: 'กำจัดส่วนที่ไม่มีประโยชน์และอาจเป็นแหล่งเชื้อโรค' },
-                        { title: 'ตัดกิ่งที่หนาแน่นเกินไป', desc: 'เพิ่มการไหลเวียนของอากาศและการรับแสงแดด' },
-                        { title: 'ปรับรูปทรงให้สมดุล', desc: 'ตัดกิ่งที่เติบโตผิดทิศทางเพื่อรูปทรงที่สวยงาม' }
+                        { title: 'ตัดกิ่งที่เติบโตขนานลำต้น', desc: 'กิ่งแนวตั้งแข่งขันกับลำต้นหลัก' },
+                        { title: 'ตัดกิ่งมุมแคบ', desc: 'กิ่งที่ทำมุมน้อยกว่า 45° หักง่ายเมื่อมีผล' },
+                        { title: 'ตัดกิ่งด้านใน', desc: 'เปิดทรงพุ่มให้แสงและอากาศเข้าถึง' }
                     ],
-                    tips: 'ตัดแต่งในช่วงที่ต้นไม้พักตัว ใช้เครื่องมือที่คมและสะอาด'
+                    tips: 'ตัดแต่งหลังเก็บเกี่ยว หลีกเลี่ยงช่วงออกดอกติดผล ใช้น้ำมันก๊าดทาแผล'
                 };
             }
+
+            return generalAdvice;
         }
 
         function newScan() {
-            try {
-                const result = document.getElementById('result');
-                const photoInput = document.getElementById('photoInput');
-                const galleryInput = document.getElementById('galleryInput');
-                
-                if (result) {
-                    result.classList.remove('show');
-                }
-                
-                if (photoInput) {
-                    photoInput.value = '';
-                }
-                
-                if (galleryInput) {
-                    galleryInput.value = '';
-                }
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                console.error('New scan error:', error);
-                // Fallback: reload page
-                window.location.reload();
-            }
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('photoInput').value = '';
+            document.getElementById('galleryInput').value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function showError(message) {
-            try {
-                const container = document.querySelector('.container');
-                if (!container) return;
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = `⚠️ ${message}`;
+            document.querySelector('.container').appendChild(errorDiv);
 
-                // Remove existing errors
-                const existingErrors = container.querySelectorAll('.error');
-                existingErrors.forEach(error => error.remove());
-
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error';
-                errorDiv.innerHTML = `⚠️ ${message}`;
-                
-                container.appendChild(errorDiv);
-                
-                setTimeout(() => {
-                    if (errorDiv && errorDiv.parentNode) {
-                        errorDiv.parentNode.removeChild(errorDiv);
-                    }
-                }, 5000);
-            } catch (error) {
-                console.error('Show error failed:', error);
-                // Fallback to alert
-                alert(`⚠️ ${message}`);
-            }
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
         }
-
-        // Prevent multiple simultaneous operations
-        let isProcessing = false;
-        
-        const originalAnalyzePhoto = analyzePhoto;
-        analyzePhoto = async function(file) {
-            if (isProcessing) {
-                showError('กำลังประมวลผลอยู่ กรุณารอสักครู่');
-                return;
-            }
-            
-            isProcessing = true;
-            try {
-                await originalAnalyzePhoto(file);
-            } finally {
-                isProcessing = false;
-            }
-        };
     </script>
 </body>
 </html>
