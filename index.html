@@ -17,10 +17,8 @@
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Enhanced Animated Background */
         body::before {
             content: '';
             position: fixed;
@@ -28,144 +26,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%);
-            z-index: -2;
-            animation: gradientShift 15s ease-in-out infinite;
-        }
-
-        /* Animated Farming Elements Background */
-        .farming-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%);
             z-index: -1;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        .farm-icon {
-            position: absolute;
-            font-size: 2em;
-            animation: floatElement 20s infinite;
-            filter: blur(0.5px);
-        }
-
-        .farm-icon:nth-child(1) { 
-            top: 10%; left: 10%; 
-            animation-delay: 0s;
-            animation-duration: 18s;
-        }
-        .farm-icon:nth-child(2) { 
-            top: 20%; right: 15%; 
-            animation-delay: 3s;
-            animation-duration: 22s;
-        }
-        .farm-icon:nth-child(3) { 
-            top: 60%; left: 5%; 
-            animation-delay: 5s;
-            animation-duration: 20s;
-        }
-        .farm-icon:nth-child(4) { 
-            bottom: 30%; right: 10%; 
-            animation-delay: 7s;
-            animation-duration: 25s;
-        }
-        .farm-icon:nth-child(5) { 
-            top: 40%; left: 50%; 
-            animation-delay: 10s;
-            animation-duration: 19s;
-        }
-        .farm-icon:nth-child(6) { 
-            bottom: 10%; left: 30%; 
-            animation-delay: 2s;
-            animation-duration: 23s;
-        }
-        .farm-icon:nth-child(7) { 
-            top: 70%; right: 30%; 
-            animation-delay: 8s;
-            animation-duration: 21s;
-        }
-        .farm-icon:nth-child(8) { 
-            top: 15%; left: 60%; 
-            animation-delay: 12s;
-            animation-duration: 24s;
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: particleFloat 15s infinite linear;
-        }
-
-        .particle:nth-child(1) {
-            width: 4px; height: 4px;
-            left: 10%;
-            animation-duration: 20s;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            width: 3px; height: 3px;
-            left: 20%;
-            animation-duration: 25s;
-            animation-delay: 2s;
-        }
-        .particle:nth-child(3) {
-            width: 5px; height: 5px;
-            left: 35%;
-            animation-duration: 18s;
-            animation-delay: 4s;
-        }
-        .particle:nth-child(4) {
-            width: 2px; height: 2px;
-            left: 50%;
-            animation-duration: 22s;
-            animation-delay: 1s;
-        }
-        .particle:nth-child(5) {
-            width: 4px; height: 4px;
-            left: 65%;
-            animation-duration: 28s;
-            animation-delay: 3s;
-        }
-        .particle:nth-child(6) {
-            width: 3px; height: 3px;
-            left: 80%;
-            animation-duration: 19s;
-            animation-delay: 5s;
-        }
-        .particle:nth-child(7) {
-            width: 5px; height: 5px;
-            left: 90%;
-            animation-duration: 24s;
-            animation-delay: 6s;
         }
 
         .container {
             max-width: 500px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
         }
 
-        /* Enhanced Hero Section */
         .hero {
             text-align: center;
             padding: 40px 25px;
@@ -175,20 +45,6 @@
             border: 1px solid rgba(255,255,255,0.2);
             margin-bottom: 30px;
             animation: fadeInDown 1s ease-out;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmerEffect 3s infinite;
         }
 
         .hero-logo {
@@ -196,8 +52,6 @@
             margin-bottom: 20px;
             animation: bounceRotate 3s infinite;
             display: inline-block;
-            position: relative;
-            z-index: 1;
         }
 
         .hero h1 {
@@ -208,27 +62,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 1;
-            animation: textGlow 3s ease-in-out infinite;
         }
 
         .hero-subtitle {
             font-size: 1.4em;
-            opacity: 0.95;
             margin-bottom: 15px;
-            font-weight: 500;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-description {
-            font-size: 1em;
-            opacity: 0.8;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
         }
 
         .badge {
@@ -241,12 +79,13 @@
             margin: 15px 5px;
             display: inline-block;
             animation: pulse 2s infinite;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
         }
 
-        /* How to Use Section with Icons */
+        .demo-badge {
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+            animation: pulse-highlight 2s infinite;
+        }
+
         .guide {
             background: rgba(255,255,255,0.1);
             border-radius: 20px;
@@ -255,18 +94,6 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
             animation: fadeInUp 1s ease-out 0.3s both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .guide::after {
-            content: '🌾';
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            font-size: 100px;
-            opacity: 0.05;
-            transform: rotate(-15deg);
         }
 
         .guide h3 {
@@ -276,42 +103,20 @@
             color: #e8f5e8;
         }
 
-        .guide-steps {
-            display: grid;
-            gap: 15px;
-        }
-
         .guide-step {
             display: flex;
             align-items: center;
             padding: 15px;
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
+            margin-bottom: 12px;
             transition: all 0.3s ease;
             border-left: 4px solid #4caf50;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .guide-step::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .guide-step:hover::before {
-            left: 100%;
         }
 
         .guide-step:hover {
             transform: translateX(5px);
             background: rgba(255,255,255,0.15);
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.2);
         }
 
         .guide-step-number {
@@ -325,18 +130,49 @@
             font-weight: bold;
             margin-right: 15px;
             flex-shrink: 0;
-            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
         }
 
-        .guide-step-text {
-            flex: 1;
-            line-height: 1.4;
+        .stats {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.9s both;
         }
 
-        /* Enhanced Action Buttons */
-        .actions {
-            margin-bottom: 25px;
-            animation: fadeInUp 1s ease-out 0.6s both;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stats-item {
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-item:hover {
+            transform: scale(1.05);
+        }
+
+        .stats-value {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4caf50, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stats-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
         }
 
         .camera-button, .gallery-button {
@@ -353,8 +189,6 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            position: relative;
-            overflow: hidden;
         }
 
         .camera-button {
@@ -365,34 +199,16 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
-        .camera-button::before {
-            content: '🌿';
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            opacity: 0.2;
-            animation: swayLeaf 3s ease-in-out infinite;
-        }
-
         .gallery-button {
             background: rgba(255,255,255,0.2);
             color: white;
             border: 2px solid rgba(255,255,255,0.3);
             height: 70px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .camera-button:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            background: linear-gradient(135deg, #ffffff, #e8f5e8);
-        }
-
-        .gallery-button:hover {
+        .camera-button:hover, .gallery-button:hover {
             transform: translateY(-3px);
-            background: rgba(255,255,255,0.25);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
         .camera-button:disabled, .gallery-button:disabled {
@@ -401,87 +217,6 @@
             transform: none;
         }
 
-        .button-icon {
-            font-size: 1.2em;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Enhanced Stats Section */
-        .stats {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
-            animation: fadeInUp 1s ease-out 0.9s both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stats::before {
-            content: '📊';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            font-size: 40px;
-            opacity: 0.1;
-            transform: rotate(15deg);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .stats-item {
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stats-item::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
-        }
-
-        .stats-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.2);
-        }
-
-        .stats-value {
-            font-size: 2em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #4caf50, #8bc34a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-label {
-            font-size: 0.9em;
-            opacity: 0.8;
-            margin-top: 5px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Enhanced Loading */
         .loading {
             display: none;
             text-align: center;
@@ -490,20 +225,6 @@
             border-radius: 25px;
             margin: 25px 0;
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loading::before {
-            content: '🌱';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 150px;
-            opacity: 0.05;
-            animation: pulse 2s infinite;
         }
 
         .loading.show {
@@ -519,24 +240,6 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .loading-text {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            font-weight: 600;
-            position: relative;
-            z-index: 1;
-        }
-
-        .loading-subtext {
-            font-size: 1em;
-            opacity: 0.8;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
         }
 
         .progress-bar {
@@ -545,22 +248,17 @@
             background: rgba(255,255,255,0.2);
             border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
+            margin: 20px 0;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a, #4caf50);
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
             border-radius: 4px;
             transition: width 0.3s ease;
             width: 0%;
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
         }
 
-        /* Result Section Enhanced */
         .result {
             display: none;
             background: white;
@@ -569,18 +267,6 @@
             padding: 30px;
             margin-top: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result::before {
-            content: '✨';
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            font-size: 80px;
-            opacity: 0.05;
-            transform: rotate(15deg);
         }
 
         .result.show {
@@ -594,7 +280,6 @@
             object-fit: cover;
             border-radius: 20px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .plant-info {
@@ -603,19 +288,6 @@
             border-radius: 18px;
             margin-bottom: 25px;
             border-left: 5px solid #4caf50;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .plant-info::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(76,175,80,0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
         }
 
         .plant-name {
@@ -623,8 +295,6 @@
             font-weight: 800;
             color: #2e7d32;
             margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
         }
 
         .confidence {
@@ -636,9 +306,6 @@
             font-weight: 600;
             display: inline-block;
             margin-right: 10px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
         }
 
         .confidence.low {
@@ -649,19 +316,6 @@
             background: linear-gradient(135deg, #f44336, #ef5350);
         }
 
-        .api-badge {
-            background: rgba(33, 150, 243, 0.1);
-            color: #1976d2;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            font-weight: 600;
-            display: inline-block;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Cutting Section Styles */
         .cutting-section {
             background: linear-gradient(135deg, #fff8e1, #fffde7);
             padding: 20px;
@@ -684,13 +338,10 @@
             margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
-            opacity: 0;
-            animation: fadeInScale 0.5s forwards;
         }
 
         .cutting-point:hover {
             transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .point-title {
@@ -699,51 +350,56 @@
             margin-bottom: 5px;
         }
 
-        .point-desc {
-            color: #666;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        /* Tips Section */
-        .tips {
-            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+        .feedback-section {
+            background: linear-gradient(135deg, #e3f2fd, #e1f5fe);
             padding: 20px;
             border-radius: 15px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
+            margin: 20px 0;
+            text-align: center;
         }
 
-        .tips::before {
-            content: '💡';
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 30px;
-            opacity: 0.2;
-        }
-
-        .tips-title {
-            font-size: 1.2em;
-            font-weight: 600;
+        .feedback-section h4 {
             color: #1565c0;
             margin-bottom: 10px;
         }
 
-        .tips-content {
-            color: #555;
-            line-height: 1.6;
+        .feedback-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
         }
 
-        /* Action Buttons in Result */
+        .feedback-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-correct {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-incorrect {
+            background: #f44336;
+            color: white;
+        }
+
+        .feedback-buttons button:hover {
+            transform: scale(1.05);
+        }
+
         .action-buttons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
 
-        .new-scan, .share-btn {
+        .new-scan, .share-btn, .export-btn {
             flex: 1;
             padding: 15px;
             border: none;
@@ -757,12 +413,6 @@
         .new-scan {
             background: linear-gradient(135deg, #4caf50, #66bb6a);
             color: white;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .new-scan:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
         }
 
         .share-btn {
@@ -771,13 +421,37 @@
             border: 2px solid #1976d2;
         }
 
-        .share-btn:hover {
-            background: #1976d2;
-            color: white;
-            transform: translateY(-2px);
+        .export-btn {
+            background: white;
+            color: #f57c00;
+            border: 2px solid #f57c00;
         }
 
-        /* Enhanced Credits Section */
+        .error, .success, .warning {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            color: #c62828;
+            border-left: 5px solid #f44336;
+        }
+
+        .success {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            color: #2e7d32;
+            border-left: 5px solid #4caf50;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
         .credits {
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
@@ -785,222 +459,10 @@
             margin-bottom: 20px;
             text-align: center;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
-            animation: fadeInUp 1s ease-out 1.2s both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .credits::before {
-            content: '🎓';
-            position: absolute;
-            bottom: -15px;
-            left: -15px;
-            font-size: 60px;
-            opacity: 0.08;
-            transform: rotate(-15deg);
-        }
-
-        .credits h4 {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            color: #e8f5e8;
-        }
-
-        .developers {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .developer {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            padding: 15px;
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .developer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .developer:hover::before {
-            left: 100%;
-        }
-
-        .developer:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.2);
-        }
-
-        .developer-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .school-info {
-            font-size: 0.85em;
-            opacity: 0.8;
-            font-style: italic;
-        }
-
-        /* Error Messages */
-        .error {
-            background: linear-gradient(135deg, #ffebee, #ffcdd2);
-            color: #c62828;
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            border-left: 5px solid #f44336;
-            animation: shake 0.6s ease-in-out;
-        }
-
-        .rate-limit-warning {
-            background: rgba(255, 193, 7, 0.2);
-            color: #fff3cd;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            text-align: center;
-            border-left: 4px solid #ffc107;
-            backdrop-filter: blur(10px);
         }
 
         .file-input {
             display: none;
-        }
-
-        .offline-indicator {
-            background: #f44336;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .image-info {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        /* Enhanced Animations */
-        @keyframes gradientShift {
-            0%, 100% { 
-                background: 
-                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%);
-            }
-            33% { 
-                background: 
-                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%),
-                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%);
-            }
-            66% { 
-                background: 
-                    radial-gradient(circle at 40% 40%, rgba(156, 204, 101, 0.2) 0%, transparent 50%),
-                    radial-gradient(circle at 20% 80%, rgba(139, 195, 74, 0.3) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.3) 0%, transparent 50%);
-            }
-        }
-
-        @keyframes floatElement {
-            0%, 100% { 
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0.15;
-            }
-            25% { 
-                transform: translateY(-20px) translateX(10px) rotate(5deg);
-                opacity: 0.2;
-            }
-            50% { 
-                transform: translateY(10px) translateX(-5px) rotate(-3deg);
-                opacity: 0.1;
-            }
-            75% { 
-                transform: translateY(-10px) translateX(-10px) rotate(2deg);
-                opacity: 0.18;
-            }
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-                transform: translateY(90vh) translateX(10px) scale(1);
-            }
-            90% {
-                opacity: 1;
-                transform: translateY(10vh) translateX(-10px) scale(1);
-            }
-            100% {
-                transform: translateY(-10vh) translateX(0) scale(0);
-                opacity: 0;
-            }
-        }
-
-        @keyframes bounceRotate {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg) scale(1);
-            }
-            25% { 
-                transform: translateY(-10px) rotate(5deg) scale(1.05);
-            }
-            50% { 
-                transform: translateY(0) rotate(0deg) scale(1);
-            }
-            75% { 
-                transform: translateY(-5px) rotate(-5deg) scale(1.02);
-            }
-        }
-
-        @keyframes textGlow {
-            0%, 100% { 
-                filter: brightness(1) drop-shadow(0 0 5px rgba(76, 175, 80, 0.3));
-            }
-            50% { 
-                filter: brightness(1.1) drop-shadow(0 0 15px rgba(76, 175, 80, 0.5));
-            }
-        }
-
-        @keyframes shimmerEffect {
-            0% { transform: translateX(-100%) translateY(-100%); }
-            100% { transform: translateX(100%) translateY(100%); }
-        }
-
-        @keyframes swayLeaf {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
-        @keyframes fadeInScale {
-            from { 
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to { 
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         @keyframes fadeInDown {
@@ -1028,24 +490,16 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(0.98); }
         }
 
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes bounceRotate {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-10px) rotate(5deg) scale(1.05); }
+            50% { transform: translateY(0) rotate(0deg) scale(1); }
+            75% { transform: translateY(-5px) rotate(-5deg) scale(1.02); }
         }
 
         @keyframes shake {
@@ -1054,155 +508,93 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Responsive Design */
+        @keyframes pulse-highlight {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+        }
+
         @media (max-width: 480px) {
             .container { padding: 15px; }
             .hero h1 { font-size: 2.2em; }
-            .hero-subtitle { font-size: 1.2em; }
-            .camera-button { height: 120px; font-size: 1.4em; }
-            .developers { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr; }
-            .farm-icon { font-size: 1.5em; }
         }
 
-        /* Dark mode accessibility */
-        @media (prefers-color-scheme: dark) {
-            .result {
-                background: #1e1e1e;
-                color: #e0e0e0;
-            }
-            .plant-info {
-                background: linear-gradient(135deg, #2d4a2d, #3a5f3a);
-            }
-            .cutting-point {
-                background: #2a2a2a;
-            }
-            .point-desc {
-                color: #aaa;
-            }
+        @media print {
+            body { background: white; color: black; }
+            .no-print { display: none !important; }
+            .result { page-break-inside: avoid; }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Farming Background Elements -->
-    <div class="farming-elements">
-        <div class="farm-icon">🌾</div>
-        <div class="farm-icon">🌿</div>
-        <div class="farm-icon">🌱</div>
-        <div class="farm-icon">🍃</div>
-        <div class="farm-icon">🌳</div>
-        <div class="farm-icon">🌻</div>
-        <div class="farm-icon">🌽</div>
-        <div class="farm-icon">🥬</div>
-    </div>
-
-    <!-- Floating Particles -->
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
     <div class="container">
-        <!-- Hero Section -->
         <div class="hero">
             <div class="hero-logo">🌱</div>
             <h1>TADDO AI</h1>
             <div class="hero-subtitle">สแกนพืชอัจฉริยะ</div>
-            <div class="hero-description">
-                เทคโนโลยี AI ล้ำสมัยสำหรับการดูแลพืชผล<br>
-                ถ่ายรูป → รู้ชนิดพืช → ได้คำแนะนำการตัดแต่งทันที
-            </div>
             <div class="badge">รู้จักพืช 60,000+ ชนิด</div>
-            <div class="badge">ความแม่นยำสูง</div>
+            <div id="demoBadge" class="badge demo-badge" style="display: none;">🎮 โหมดสาธิต</div>
         </div>
 
-        <!-- How to Use Guide -->
         <div class="guide">
             <h3>📋 วิธีการใช้งาน</h3>
-            <div class="guide-steps">
-                <div class="guide-step">
-                    <div class="guide-step-number">1</div>
-                    <div class="guide-step-text">ถ่ายรูปพืชให้ชัดเจน โฟกัสที่ใบ ดอก หรือผล</div>
-                </div>
-                <div class="guide-step">
-                    <div class="guide-step-number">2</div>
-                    <div class="guide-step-text">รอ TADDO AI วิเคราะห์และระบุชนิดพืช</div>
-                </div>
-                <div class="guide-step">
-                    <div class="guide-step-number">3</div>
-                    <div class="guide-step-text">รับคำแนะนำการตัดแต่งที่เหมาะสมกับพืชแต่ละชนิด</div>
-                </div>
-                <div class="guide-step">
-                    <div class="guide-step-number">4</div>
-                    <div class="guide-step-text">นำไปปฏิบัติเพื่อพืชผลที่แข็งแรงและให้ผลผลิตดี</div>
-                </div>
+            <div class="guide-step">
+                <div class="guide-step-number">1</div>
+                <div>ถ่ายรูปพืชให้ชัดเจน โฟกัสที่ใบ ดอก หรือผล</div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-number">2</div>
+                <div>รอ TADDO AI วิเคราะห์และระบุชนิดพืช</div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-number">3</div>
+                <div>รับคำแนะนำการตัดแต่งที่เหมาะสม</div>
             </div>
         </div>
 
-        <!-- Offline Indicator -->
-        <div id="offlineIndicator" class="offline-indicator" style="display: none;">
-            📡 ไม่มีสัญญาณอินเทอร์เน็ต - กรุณาเช็คการเชื่อมต่อ
-        </div>
-
-        <!-- Statistics -->
         <div class="stats">
             <div class="stats-grid">
                 <div class="stats-item">
                     <span class="stats-value" id="scanCount">0</span>
-                    <div class="stats-label">ครั้งที่สแกน</div>
+                    <div class="stats-label">สแกนแล้ว</div>
                 </div>
                 <div class="stats-item">
                     <span class="stats-value" id="avgAccuracy">0%</span>
                     <div class="stats-label">ความแม่นยำ</div>
                 </div>
+                <div class="stats-item">
+                    <span class="stats-value" id="successRate">0%</span>
+                    <div class="stats-label">สำเร็จ</div>
+                </div>
             </div>
         </div>
 
-        <!-- Rate Limit Warning -->
-        <div id="rateLimitWarning" class="rate-limit-warning" style="display: none;">
-            ⏱️ กรุณารอ <span id="cooldownTime">30</span> วินาที ก่อนสแกนใหม่
-        </div>
-
-        <!-- Action Buttons -->
         <div class="actions">
-            <button class="camera-button" id="cameraBtn" onclick="takePhoto()" aria-label="ถ่ายรูปพืชเพื่อสแกน">
-                <span class="button-icon">📱</span>
-                <span>ถ่ายรูปพืช</span>
+            <button class="camera-button" id="cameraBtn" onclick="takePhoto()">
+                <span>📱 ถ่ายรูปพืช</span>
             </button>
-
-            <button class="gallery-button" id="galleryBtn" onclick="selectFromGallery()" aria-label="เลือกรูปจากคลัง">
-                <span class="button-icon">🖼️</span>
-                <span>เลือกรูปจากคลัง</span>
+            <button class="gallery-button" onclick="selectFromGallery()">
+                <span>🖼️ เลือกจากคลัง</span>
             </button>
         </div>
 
         <input type="file" id="photoInput" class="file-input" accept="image/*" capture="environment">
         <input type="file" id="galleryInput" class="file-input" accept="image/*">
 
-        <!-- Loading -->
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <div class="loading-text">🤖 TADDO AI กำลังวิเคราะห์</div>
-            <div class="loading-subtext" id="loadingText">กำลังประมวลผลภาพ...</div>
+            <div style="font-size: 1.3em; margin-bottom: 15px;">🤖 TADDO AI กำลังวิเคราะห์</div>
+            <div id="loadingText">กำลังประมวลผลภาพ...</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
 
-        <!-- Result -->
-        <div id="result" class="result" role="region" aria-live="polite">
-            <img id="resultImage" class="result-image" alt="รูปพืชที่สแกน">
-            <div id="imageInfo" class="image-info"></div>
-
+        <div id="result" class="result">
+            <img id="resultImage" class="result-image">
             <div class="plant-info">
-                <div class="plant-name" id="plantName">🌱 ชื่อพืช</div>
+                <div class="plant-name" id="plantName">ชื่อพืช</div>
                 <span class="confidence" id="confidence">95%</span>
-                <span class="api-badge" id="apiBadge">TADDO AI</span>
             </div>
 
             <div class="cutting-section">
@@ -1210,220 +602,94 @@
                 <div id="cuttingPoints"></div>
             </div>
 
-            <div class="tips">
-                <div class="tips-title">💡 เคล็ดลับการดูแล</div>
-                <div class="tips-content" id="tipsText">คำแนะนำจะแสดงที่นี่</div>
+            <div class="feedback-section">
+                <h4>🔍 ช่วยปรับปรุงความแม่นยำ</h4>
+                <p>ผลลัพธ์ถูกต้องหรือไม่?</p>
+                <div class="feedback-buttons">
+                    <button class="btn-correct" onclick="submitFeedback(true)">✅ ถูกต้อง</button>
+                    <button class="btn-incorrect" onclick="submitFeedback(false)">❌ ไม่ถูกต้อง</button>
+                </div>
             </div>
 
             <div class="action-buttons">
                 <button class="new-scan" onclick="newScan()">🔄 สแกนใหม่</button>
-                <button class="share-btn" onclick="shareResult()">📤 แชร์ผลลัพธ์</button>
+                <button class="share-btn" onclick="shareResult()">📤 แชร์</button>
+                <button class="export-btn no-print" onclick="exportData()">📊 ส่งออกข้อมูล</button>
             </div>
         </div>
 
-        <!-- Credits -->
         <div class="credits">
-            <h4>👨‍💻 ทีมพัฒนา</h4>
-            <div class="developers">
-                <div class="developer">
-                    <div class="developer-name">นายตฤณ ตันตระกูล</div>
-                    <div class="school-info">นักพัฒนา</div>
-                </div>
-                <div class="developer">
-                    <div class="developer-name">นายภูศิลา กาสุ</div>
-                    <div class="school-info">นักพัฒนา</div>
-                </div>
-            </div>
-            <div class="school-info">
-                โรงเรียนจักรคำคณาทร จังหวัดลำพูน<br>
-                พัฒนาด้วย TADDO AI Technology
-            </div>
+            <h4>พัฒนาโดย</h4>
+            <div>นายตฤณ ตันตระกูล และ นายภูศิลา กาสุ</div>
+            <div style="opacity: 0.8; font-size: 0.9em;">โรงเรียนจักรคำคณาทร จังหวัดลำพูน</div>
         </div>
     </div>
 
     <script>
-        // ===== CONFIGURATION =====
+        // Configuration
         const CONFIG = {
-            PLANTNET_API_KEY: '2b10fVqZpXS2cvXW6EyaPHqJu',
-            MAX_IMAGE_SIZE: 800,
-            IMAGE_QUALITY: 0.8,
-            RATE_LIMIT: 5,
-            RATE_WINDOW: 300000,
-            RETRY_ATTEMPTS: 3,
-            TIMEOUT: 15000
+            API_KEY: btoa('2b10fVqZpXS2cvXW6EyaPHqJu'), // Simple encoding
+            MAX_IMAGE_SIZE: 1200,
+            IMAGE_QUALITY: 0.85,
+            RATE_LIMIT: 10,
+            DEMO_MODE: window.location.search.includes('demo=true')
         };
 
-        const CORS_PROXIES = [
-            'https://api.allorigins.win/raw?url=',
-            'https://corsproxy.io/?',
-            'https://proxy.cors.sh/'
-        ];
-
-        // ===== RATE LIMITER CLASS =====
-        class RateLimiter {
-            constructor(limit = CONFIG.RATE_LIMIT, window = CONFIG.RATE_WINDOW) {
-                this.calls = JSON.parse(localStorage.getItem('taddoScanCalls') || '[]');
-                this.limit = limit;
-                this.window = window;
-            }
-
-            canMakeCall() {
-                const now = Date.now();
-                this.calls = this.calls.filter(time => now - time < this.window);
-                return this.calls.length < this.limit;
-            }
-
-            recordCall() {
-                this.calls.push(Date.now());
-                localStorage.setItem('taddoScanCalls', JSON.stringify(this.calls));
-            }
-
-            getWaitTime() {
-                if (this.calls.length === 0) return 0;
-                const oldest = Math.min(...this.calls);
-                return Math.max(0, this.window - (Date.now() - oldest));
-            }
-        }
-
-        // ===== TADDO AI SCANNER CLASS =====
+        // Main Application Class
         class TaddoAI {
             constructor() {
-                this.rateLimiter = new RateLimiter();
+                this.isDemoMode = CONFIG.DEMO_MODE;
+                this.cache = new Map();
+                this.stats = this.loadStats();
+                this.logger = new ResearchLogger();
+                this.feedback = new FeedbackSystem();
                 this.currentResult = null;
                 this.isLoading = false;
-                this.scanCount = parseInt(localStorage.getItem('taddoScanCount') || '0');
-                this.accuracyHistory = JSON.parse(localStorage.getItem('taddoAccuracyHistory') || '[]');
-                this.objectUrls = new Set();
+                this.scanQueue = [];
                 
-                this.initEventListeners();
-                this.updateStats();
-                this.checkOnlineStatus();
-                this.showWelcomeAnimation();
+                this.init();
             }
 
-            showWelcomeAnimation() {
-                // Add subtle entrance animations
-                setTimeout(() => {
-                    document.querySelector('.hero').style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        document.querySelector('.hero').style.transform = 'scale(1)';
-                    }, 200);
-                }, 500);
-            }
-
-            initEventListeners() {
-                const photoInput = document.getElementById('photoInput');
-                const galleryInput = document.getElementById('galleryInput');
-
-                if (photoInput) {
-                    photoInput.addEventListener('change', (e) => this.handlePhoto(e));
-                }
-                if (galleryInput) {
-                    galleryInput.addEventListener('change', (e) => this.handlePhoto(e));
-                }
-
-                window.addEventListener('online', () => this.checkOnlineStatus());
-                window.addEventListener('offline', () => this.checkOnlineStatus());
-
-                window.addEventListener('error', (e) => {
-                    console.error('Global error:', e.error);
-                    this.hideLoading();
-                    this.showError('เกิดข้อผิดพลาดไม่คาดคิด กรุณาลองใหม่');
-                });
-            }
-
-            checkOnlineStatus() {
-                const indicator = document.getElementById('offlineIndicator');
-                if (!navigator.onLine && indicator) {
-                    indicator.style.display = 'block';
-                } else if (indicator) {
-                    indicator.style.display = 'none';
-                }
-            }
-
-            updateStats() {
-                const scanCountEl = document.getElementById('scanCount');
-                const avgAccuracyEl = document.getElementById('avgAccuracy');
-
-                if (scanCountEl) {
-                    // Animate number counting
-                    this.animateNumber(scanCountEl, 0, this.scanCount, 1000);
-                }
+            init() {
+                this.updateUI();
+                this.attachEventListeners();
                 
-                if (avgAccuracyEl && this.accuracyHistory.length > 0) {
-                    const avg = this.accuracyHistory.reduce((a, b) => a + b, 0) / this.accuracyHistory.length;
-                    this.animateNumber(avgAccuracyEl, 0, Math.round(avg), 1200, '%');
+                if (this.isDemoMode) {
+                    document.getElementById('demoBadge').style.display = 'inline-block';
+                    this.showMessage('🎮 โหมดสาธิต - ใช้ข้อมูลจำลอง', 'warning');
                 }
+
+                // Check online status
+                window.addEventListener('online', () => this.showMessage('✅ กลับมาออนไลน์แล้ว', 'success'));
+                window.addEventListener('offline', () => this.showMessage('📡 ไม่มีสัญญาณอินเทอร์เน็ต', 'error'));
             }
 
-            animateNumber(element, start, end, duration, suffix = '') {
-                const startTime = performance.now();
-                
-                const animate = (currentTime) => {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    const current = Math.round(start + (end - start) * progress);
-                    element.textContent = current + suffix;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    }
-                };
-                
-                requestAnimationFrame(animate);
+            attachEventListeners() {
+                document.getElementById('photoInput').addEventListener('change', (e) => this.handlePhoto(e));
+                document.getElementById('galleryInput').addEventListener('change', (e) => this.handlePhoto(e));
             }
 
-            async resizeImage(file) {
-                return new Promise((resolve, reject) => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const img = new Image();
-                    
-                    img.onload = () => {
-                        try {
-                            const maxSize = CONFIG.MAX_IMAGE_SIZE;
-                            const ratio = Math.min(maxSize / img.width, maxSize / img.height);
-                            
-                            canvas.width = img.width * ratio;
-                            canvas.height = img.height * ratio;
-                            
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                            canvas.toBlob((blob) => {
-                                if (blob) {
-                                    resolve(blob);
-                                } else {
-                                    reject(new Error('ไม่สามารถประมวลผลรูปภาพได้'));
-                                }
-                            }, 'image/jpeg', CONFIG.IMAGE_QUALITY);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    
-                    img.onerror = () => reject(new Error('ไม่สามารถโหลดรูปภาพได้'));
-                    
-                    const objectUrl = URL.createObjectURL(file);
-                    this.objectUrls.add(objectUrl);
-                    img.src = objectUrl;
-                });
+            loadStats() {
+                return JSON.parse(localStorage.getItem('taddoStats') || JSON.stringify({
+                    totalScans: 0,
+                    successfulScans: 0,
+                    avgConfidence: 0,
+                    plantTypes: {},
+                    feedbackData: []
+                }));
             }
 
-            cleanupObjectUrls() {
-                this.objectUrls.forEach(url => URL.revokeObjectURL(url));
-                this.objectUrls.clear();
+            saveStats() {
+                localStorage.setItem('taddoStats', JSON.stringify(this.stats));
             }
 
-            updateProgress(percent) {
-                const progressFill = document.getElementById('progressFill');
-                if (progressFill) {
-                    progressFill.style.width = percent + '%';
-                }
-            }
-
-            updateLoadingText(text) {
-                const el = document.getElementById('loadingText');
-                if (el) el.textContent = text;
+            updateUI() {
+                document.getElementById('scanCount').textContent = this.stats.totalScans;
+                document.getElementById('avgAccuracy').textContent = Math.round(this.stats.avgConfidence) + '%';
+                const successRate = this.stats.totalScans > 0 
+                    ? Math.round((this.stats.successfulScans / this.stats.totalScans) * 100) 
+                    : 0;
+                document.getElementById('successRate').textContent = successRate + '%';
             }
 
             async handlePhoto(event) {
@@ -1431,398 +697,410 @@
                 if (!file) return;
 
                 if (!file.type.startsWith('image/')) {
-                    this.showError('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
-                    return;
-                }
-
-                if (file.size > 10 * 1024 * 1024) {
-                    this.showError('ไฟล์รูปภาพใหญ่เกินไป (สูงสุด 10MB)');
-                    return;
-                }
-
-                if (!this.rateLimiter.canMakeCall()) {
-                    this.showRateLimitWarning();
+                    this.showMessage('กรุณาเลือกไฟล์รูปภาพเท่านั้น', 'error');
                     return;
                 }
 
                 try {
                     this.showLoading();
-                    this.updateProgress(10);
+                    this.logger.log('scan_started', { fileSize: file.size, fileType: file.type });
 
-                    this.updateLoadingText('🔄 กำลังปรับขนาดรูปภาพ...');
-                    const optimizedFile = await this.resizeImage(file);
-                    this.showImagePreview(optimizedFile);
-                    this.updateProgress(30);
+                    // Optimize image
+                    const optimizedFile = await this.optimizeImage(file);
+                    this.updateProgress(30, 'กำลังส่งข้อมูลเพื่อวิเคราะห์...');
 
+                    // Analyze
                     const result = await this.analyzePlant(optimizedFile);
-                    this.updateProgress(100);
+                    this.updateProgress(100, 'วิเคราะห์เสร็จสิ้น');
+
+                    // Update stats
+                    this.updateStats(result);
                     
-                    this.hideLoading();
-                    this.showResult(result);
-                    
-                    this.scanCount++;
-                    this.accuracyHistory.push(result.confidence);
-                    if (this.accuracyHistory.length > 10) {
-                        this.accuracyHistory.shift();
-                    }
-                    
-                    localStorage.setItem('taddoScanCount', this.scanCount.toString());
-                    localStorage.setItem('taddoAccuracyHistory', JSON.stringify(this.accuracyHistory));
-                    this.updateStats();
+                    // Show result
+                    this.showResult(result, optimizedFile);
+                    this.logger.log('scan_completed', result);
 
                 } catch (error) {
-                    console.error('Analysis error:', error);
-                    this.hideLoading();
-                    this.showError(this.getErrorMessage(error));
+                    console.error('Error:', error);
+                    this.handleError(error);
                 } finally {
-                    this.cleanupObjectUrls();
+                    this.hideLoading();
                     event.target.value = '';
                 }
             }
 
-            showImagePreview(file) {
-                const resultImage = document.getElementById('resultImage');
-                const imageInfo = document.getElementById('imageInfo');
-                
-                if (resultImage) {
-                    const objectUrl = URL.createObjectURL(file);
-                    this.objectUrls.add(objectUrl);
-                    resultImage.src = objectUrl;
-                }
+            async optimizeImage(file) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
 
-                if (imageInfo) {
-                    const size = (file.size / 1024).toFixed(1);
-                    imageInfo.textContent = `ขนาดไฟล์: ${size} KB (ปรับขนาดแล้ว)`;
-                }
+                    img.onload = () => {
+                        let { width, height } = img;
+                        const maxSize = CONFIG.MAX_IMAGE_SIZE;
+
+                        if (width > height && width > maxSize) {
+                            height = (height * maxSize) / width;
+                            width = maxSize;
+                        } else if (height > maxSize) {
+                            width = (width * maxSize) / height;
+                            height = maxSize;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+                        }, 'image/jpeg', CONFIG.IMAGE_QUALITY);
+                    };
+
+                    img.onerror = reject;
+                    img.src = URL.createObjectURL(file);
+                });
             }
 
             async analyzePlant(file) {
-                this.rateLimiter.recordCall();
-                
+                // Demo mode
+                if (this.isDemoMode) {
+                    await this.sleep(2000);
+                    return this.getDemoResult();
+                }
+
+                // Check cache
+                const cacheKey = await this.getImageHash(file);
+                if (this.cache.has(cacheKey)) {
+                    return this.cache.get(cacheKey);
+                }
+
+                // Real API call
                 const formData = new FormData();
                 formData.append('images', file);
                 formData.append('organs', 'auto');
-                
-                const projects = ['k-world-flora', 'useful-plants', 'weurope'];
-                let lastError;
+
+                const apiKey = atob(CONFIG.API_KEY);
+                const projects = ['k-world-flora', 'useful-plants'];
 
                 for (const project of projects) {
-                    this.updateLoadingText(`🔍 ค้นหาในฐานข้อมูล ${project.toUpperCase()}...`);
-                    this.updateProgress(40 + (projects.indexOf(project) * 20));
-                    
                     try {
-                        const result = await this.tryProject(project, formData);
-                        if (result) return result;
-                    } catch (error) {
-                        lastError = error;
-                        continue;
-                    }
-                }
-
-                throw lastError || new Error('ไม่พบข้อมูลพืชในฐานข้อมูล กรุณาถ่ายรูปให้ชัดเจนขึ้น');
-            }
-
-            async tryProject(project, formData) {
-                try {
-                    const directUrl = `https://my-api.plantnet.org/v2/identify/${project}?api-key=${CONFIG.PLANTNET_API_KEY}`;
-                    const response = await this.fetchWithTimeout(directUrl, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.results && data.results.length > 0) {
-                            return this.parseResult(data.results[0], project);
-                        }
-                    }
-                } catch (error) {
-                    console.log(`Direct connection failed for ${project}:`, error);
-                }
-
-                for (const proxy of CORS_PROXIES) {
-                    try {
-                        const apiUrl = `https://my-api.plantnet.org/v2/identify/${project}?api-key=${CONFIG.PLANTNET_API_KEY}`;
-                        const proxyUrl = proxy + encodeURIComponent(apiUrl);
+                        this.updateProgress(50, `ค้นหาในฐานข้อมูล ${project}...`);
                         
-                        const response = await this.fetchWithTimeout(proxyUrl, {
-                            method: 'POST',
-                            body: formData
-                        });
+                        const response = await fetch(
+                            `https://my-api.plantnet.org/v2/identify/${project}?api-key=${apiKey}`,
+                            { method: 'POST', body: formData }
+                        );
 
                         if (response.ok) {
                             const data = await response.json();
                             if (data.results && data.results.length > 0) {
-                                return this.parseResult(data.results[0], project);
+                                const result = this.parseResult(data.results[0]);
+                                this.cache.set(cacheKey, result);
+                                return result;
                             }
                         }
                     } catch (error) {
-                        continue;
+                        console.log(`Project ${project} failed:`, error);
                     }
                 }
 
-                return null;
+                throw new Error('ไม่สามารถระบุชนิดพืชได้ กรุณาถ่ายรูปให้ชัดเจนขึ้น');
             }
 
-            fetchWithTimeout(url, options) {
-                return Promise.race([
-                    fetch(url, options),
-                    new Promise((_, reject) =>
-                        setTimeout(() => reject(new Error('Request timeout')), CONFIG.TIMEOUT)
-                    )
-                ]);
-            }
-
-            parseResult(result, project) {
+            parseResult(result) {
                 const species = result.species;
-                
                 return {
                     name: this.getCommonName(species),
                     scientificName: species.scientificNameWithoutAuthor,
                     confidence: Math.round(result.score * 100),
                     genus: species.genus?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                    family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ',
-                    source: project.toUpperCase(),
-                    timestamp: new Date().toISOString()
+                    family: species.family?.scientificNameWithoutAuthor || 'ไม่ทราบ'
                 };
             }
 
             getCommonName(species) {
                 if (species.commonNames && species.commonNames.length > 0) {
-                    const thaiName = species.commonNames.find(name => 
-                        /[ก-๙]/.test(name)
-                    );
-                    if (thaiName) return thaiName;
-                    return species.commonNames[0];
+                    const thaiName = species.commonNames.find(name => /[ก-๙]/.test(name));
+                    return thaiName || species.commonNames[0];
                 }
                 return species.scientificNameWithoutAuthor;
             }
 
+            getDemoResult() {
+                const demoPlants = [
+                    {
+                        name: 'มะม่วงน้ำดอกไม้',
+                        scientificName: 'Mangifera indica',
+                        confidence: 95,
+                        genus: 'Mangifera',
+                        family: 'Anacardiaceae'
+                    },
+                    {
+                        name: 'ทุเรียนหมอนทอง',
+                        scientificName: 'Durio zibethinus',
+                        confidence: 92,
+                        genus: 'Durio',
+                        family: 'Malvaceae'
+                    },
+                    {
+                        name: 'ลำไยอีดอ',
+                        scientificName: 'Dimocarpus longan',
+                        confidence: 88,
+                        genus: 'Dimocarpus',
+                        family: 'Sapindaceae'
+                    }
+                ];
+                return demoPlants[Math.floor(Math.random() * demoPlants.length)];
+            }
+
+            showResult(result, imageFile) {
+                this.currentResult = result;
+
+                // Show image
+                const img = document.getElementById('resultImage');
+                img.src = URL.createObjectURL(imageFile);
+
+                // Show plant info
+                document.getElementById('plantName').innerHTML = `
+                    <div>${result.name}</div>
+                    <div style="font-size: 0.7em; color: #666; margin-top: 5px;">
+                        ${result.scientificName} | ${result.family}
+                    </div>
+                `;
+
+                // Show confidence
+                const confidenceEl = document.getElementById('confidence');
+                confidenceEl.textContent = `${result.confidence}%`;
+                confidenceEl.className = 'confidence';
+                if (result.confidence < 50) confidenceEl.classList.add('very-low');
+                else if (result.confidence < 75) confidenceEl.classList.add('low');
+
+                // Generate cutting advice
+                const advice = this.getCuttingAdvice(result.genus);
+                document.getElementById('cuttingPoints').innerHTML = advice.points
+                    .map(p => `
+                        <div class="cutting-point">
+                            <div class="point-title">${p.title}</div>
+                            <div style="color: #666; font-size: 0.9em;">${p.desc}</div>
+                        </div>
+                    `).join('');
+
+                // Show result section
+                document.getElementById('result').classList.add('show');
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            getCuttingAdvice(genus) {
+                const adviceDB = {
+                    'Mangifera': {
+                        points: [
+                            { title: 'ตัดกิ่งแนวตั้ง', desc: 'กิ่งที่แข่งขันกับลำต้นหลัก' },
+                            { title: 'กิ่งมุมแคบ', desc: 'มุมน้อยกว่า 45 องศา จะหักง่าย' },
+                            { title: 'กิ่งที่ขัดกัน', desc: 'ป้องกันแผลจากการเสียดสี' }
+                        ]
+                    },
+                    'Durio': {
+                        points: [
+                            { title: 'กิ่งห้อยต่ำ', desc: 'บังแสงและยากต่อการเก็บเกี่ยว' },
+                            { title: 'กิ่งด้านในหนาแน่น', desc: 'เพิ่มการระบายอากาศ' },
+                            { title: 'กิ่งมุมแคบ', desc: 'ป้องกันแตกหักจากน้ำหนักผล' }
+                        ]
+                    }
+                };
+
+                return adviceDB[genus] || {
+                    points: [
+                        { title: 'กิ่งแห้งและเสียหาย', desc: 'กำจัดแหล่งเชื้อโรค' },
+                        { title: 'กิ่งหนาแน่นเกิน', desc: 'เพิ่มแสงและอากาศ' },
+                        { title: 'ปรับรูปทรง', desc: 'ตัดกิ่งผิดทิศทาง' }
+                    ]
+                };
+            }
+
+            updateStats(result) {
+                this.stats.totalScans++;
+                if (result.confidence > 50) {
+                    this.stats.successfulScans++;
+                }
+                
+                // Update average confidence
+                const totalConfidence = (this.stats.avgConfidence * (this.stats.totalScans - 1)) + result.confidence;
+                this.stats.avgConfidence = totalConfidence / this.stats.totalScans;
+
+                // Track plant types
+                this.stats.plantTypes[result.name] = (this.stats.plantTypes[result.name] || 0) + 1;
+
+                this.saveStats();
+                this.updateUI();
+            }
+
             showLoading() {
                 this.isLoading = true;
-                const loading = document.getElementById('loading');
-                const result = document.getElementById('result');
-                const buttons = document.querySelectorAll('.camera-button, .gallery-button');
-                
-                if (loading) loading.classList.add('show');
-                if (result) result.classList.remove('show');
-                
-                buttons.forEach(btn => btn.disabled = true);
-                this.updateProgress(0);
+                document.getElementById('loading').classList.add('show');
+                document.getElementById('result').classList.remove('show');
+                document.getElementById('cameraBtn').disabled = true;
+                this.updateProgress(0, 'กำลังเตรียมข้อมูล...');
             }
 
             hideLoading() {
                 this.isLoading = false;
-                const loading = document.getElementById('loading');
-                const buttons = document.querySelectorAll('.camera-button, .gallery-button');
-                
-                if (loading) loading.classList.remove('show');
-                buttons.forEach(btn => btn.disabled = false);
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('cameraBtn').disabled = false;
             }
 
-            showRateLimitWarning() {
-                const warning = document.getElementById('rateLimitWarning');
-                const timeEl = document.getElementById('cooldownTime');
-                
-                if (warning && timeEl) {
-                    const waitTime = Math.ceil(this.rateLimiter.getWaitTime() / 1000);
-                    timeEl.textContent = waitTime;
-                    warning.style.display = 'block';
-                    
-                    const countdown = setInterval(() => {
-                        const remaining = Math.ceil(this.rateLimiter.getWaitTime() / 1000);
-                        if (remaining <= 0) {
-                            warning.style.display = 'none';
-                            clearInterval(countdown);
-                        } else {
-                            timeEl.textContent = remaining;
-                        }
-                    }, 1000);
-                }
+            updateProgress(percent, text) {
+                document.getElementById('progressFill').style.width = percent + '%';
+                if (text) document.getElementById('loadingText').textContent = text;
             }
 
-            showResult(result) {
-                this.currentResult = result;
-                
-                const plantNameEl = document.getElementById('plantName');
-                const confidenceEl = document.getElementById('confidence');
-                const apiBadgeEl = document.getElementById('apiBadge');
-                
-                if (plantNameEl) {
-                    plantNameEl.innerHTML = `
-                        <div>🌱 ${result.name}</div>
-                        <div style="font-style: italic; color: #666; font-size: 0.9em; margin-top: 5px;">${result.scientificName}</div>
-                        <div style="font-size: 0.8em; color: #666; margin-top: 3px;">สกุล: ${result.genus} | วงศ์: ${result.family}</div>
-                    `;
-                }
-                
-                if (confidenceEl) {
-                    confidenceEl.textContent = `${result.confidence}%`;
-                    confidenceEl.className = 'confidence';
-                    
-                    if (result.confidence < 50) {
-                        confidenceEl.classList.add('very-low');
-                    } else if (result.confidence < 75) {
-                        confidenceEl.classList.add('low');
-                    }
-                }
-                
-                if (apiBadgeEl) {
-                    apiBadgeEl.textContent = `TADDO AI • ${result.source}`;
-                }
-
-                const advice = this.generateCuttingAdvice(result.name, result.scientificName);
-                
-                const pointsHTML = advice.points.map((point, index) => `
-                    <div class="cutting-point" style="animation-delay: ${index * 0.1}s">
-                        <div class="point-title">${index + 1}. ${point.title}</div>
-                        <div class="point-desc">${point.desc}</div>
-                    </div>
-                `).join('');
-                
-                const cuttingPointsEl = document.getElementById('cuttingPoints');
-                const tipsTextEl = document.getElementById('tipsText');
-                
-                if (cuttingPointsEl) cuttingPointsEl.innerHTML = pointsHTML;
-                if (tipsTextEl) tipsTextEl.textContent = advice.tips;
-
-                const resultEl = document.getElementById('result');
-                if (resultEl) {
-                    resultEl.classList.add('show');
-                    setTimeout(() => {
-                        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 300);
-                }
+            showMessage(message, type = 'info') {
+                const div = document.createElement('div');
+                div.className = type;
+                div.textContent = message;
+                document.querySelector('.container').insertBefore(div, document.querySelector('.container').firstChild);
+                setTimeout(() => div.remove(), 5000);
             }
 
-            generateCuttingAdvice(name, scientificName) {
-                const plantAdvice = {
-                    'Mangifera': {
-                        points: [
-                            { title: 'ตัดกิ่งที่เติบโตขนานกับลำต้นหลัก', desc: 'กิ่งแนวตั้งจะแข่งขันกับลำต้น ควรตัดเพื่อรูปทรงที่สมดุล' },
-                            { title: 'ตัดกิ่งที่มีมุมแคบ (น้อยกว่า 45 องศา)', desc: 'กิ่งมุมแคบจะหักง่ายเมื่อมีน้ำหนักผล ควรตัดป้องกัน' },
-                            { title: 'ตัดกิ่งที่ขัดแย้งและเสียดสีกัน', desc: 'ลดการแข่งขันและป้องกันแผลจากการเสียดสี' }
-                        ],
-                        tips: 'ตัดแต่งหลังเก็บเกี่ยวเมื่อต้นไม้พักตัว หลีกเลี่ยงช่วงออกดอกติดผล ใช้เครื่องมือคมและสะอาด ทาน้ำมันก๊าดที่แผลตัด'
-                    },
-                    'Durio': {
-                        points: [
-                            { title: 'ตัดกิ่งที่เจริญเติบโตลงล่าง', desc: 'กิ่งที่ห้อยต่ำจะบังแสงและยากต่อการเก็บเกี่ยว' },
-                            { title: 'ตัดกิ่งด้านในที่หนาแน่น', desc: 'เพิ่มการระบายอากาศและลดความชื้นในทรงพุ่ม' },
-                            { title: 'ตัดกิ่งที่มีมุมแคบจากลำต้น', desc: 'ป้องกันการแตกหักเมื่อมีน้ำหนักผลทุเรียนที่หนัก' }
-                        ],
-                        tips: 'ตัดแต่งหลังเก็บเกี่ยว (กรกฎาคม-สิงหาคม) ใช้เลื่อนตัดกิ่งที่คม ทาแผลด้วยสีทองแดงป้องกันเชื้อรา'
-                    }
-                };
-
-                for (const [genus, advice] of Object.entries(plantAdvice)) {
-                    if (scientificName && scientificName.includes(genus)) {
-                        return advice;
-                    }
-                }
-
-                return {
-                    points: [
-                        { title: 'ตัดกิ่งที่แห้งตายและเสียหาย', desc: 'กำจัดส่วนที่ไม่มีประโยชน์และอาจเป็นแหล่งเชื้อโรค' },
-                        { title: 'ตัดกิ่งที่หนาแน่นเกินไป', desc: 'เพิ่มการไหลเวียนของอากาศและการรับแสงแดด' },
-                        { title: 'ปรับรูปทรงให้สมดุล', desc: 'ตัดกิ่งที่เติบโตผิดทิศทางเพื่อรูปทรงที่สวยงาม' }
-                    ],
-                    tips: 'ตัดแต่งในช่วงที่ต้นไม้พักตัว หลีกเลี่ยงช่วงที่มีการเจริญเติบโตแรง ใช้เครื่องมือที่คมและสะอาด ทำความสะอาดแผลตัดด้วยน้ำยาฆ่าเชื้อ'
-                };
-            }
-
-            getErrorMessage(error) {
+            handleError(error) {
                 if (!navigator.onLine) {
-                    return '📡 ไม่มีสัญญาณอินเทอร์เน็ต กรุณาเช็คการเชื่อมต่อ';
+                    this.showMessage('📡 ไม่มีสัญญาณอินเทอร์เน็ต', 'error');
+                    this.queueForRetry();
+                } else {
+                    this.showMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
                 }
-                
-                if (error.message.includes('timeout')) {
-                    return '⏱️ การเชื่อมต่อหมดเวลา กรุณาลองใหม่';
-                }
-                
-                return error.message || '❌ เกิดข้อผิดพลาดไม่คาดคิด กรุณาลองใหม่';
             }
 
-            showError(message) {
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error';
-                errorDiv.innerHTML = message;
-                document.querySelector('.container').appendChild(errorDiv);
-
-                setTimeout(() => {
-                    if (errorDiv.parentNode) {
-                        errorDiv.parentNode.removeChild(errorDiv);
-                    }
-                }, 8000);
+            queueForRetry() {
+                // Save to retry queue
+                const queue = JSON.parse(localStorage.getItem('retryQueue') || '[]');
+                queue.push({ timestamp: Date.now() });
+                localStorage.setItem('retryQueue', JSON.stringify(queue));
             }
 
-            newScan() {
-                const result = document.getElementById('result');
-                if (result) result.classList.remove('show');
-                
-                this.currentResult = null;
-                this.cleanupObjectUrls();
-                
-                document.getElementById('photoInput').value = '';
-                document.getElementById('galleryInput').value = '';
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            async getImageHash(file) {
+                return `${file.size}_${file.lastModified}_${file.name}`;
             }
 
-            async shareResult() {
-                if (!this.currentResult) return;
-
-                const shareData = {
-                    title: '🌱 ผลการสแกนจาก TADDO AI',
-                    text: `พบ: ${this.currentResult.name} (${this.currentResult.scientificName})\nความแม่นยำ: ${this.currentResult.confidence}%\nวิเคราะห์โดย TADDO AI`,
-                    url: window.location.href
-                };
-
-                try {
-                    if (navigator.share) {
-                        await navigator.share(shareData);
-                    } else {
-                        const text = `${shareData.text}\n${shareData.url}`;
-                        await navigator.clipboard.writeText(text);
-                        this.showError('📋 คัดลอกข้อมูลแล้ว!');
-                    }
-                } catch (error) {
-                    console.error('Share failed:', error);
-                }
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
         }
 
-        // ===== GLOBAL FUNCTIONS =====
+        // Research Logger
+        class ResearchLogger {
+            constructor() {
+                this.logs = [];
+                this.sessionId = `session-${Date.now()}`;
+            }
+
+            log(event, data) {
+                this.logs.push({
+                    sessionId: this.sessionId,
+                    timestamp: new Date().toISOString(),
+                    event,
+                    data
+                });
+
+                if (this.logs.length >= 10) {
+                    this.saveLogs();
+                }
+            }
+
+            saveLogs() {
+                const existing = JSON.parse(localStorage.getItem('researchLogs') || '[]');
+                localStorage.setItem('researchLogs', JSON.stringify([...existing, ...this.logs]));
+                this.logs = [];
+            }
+        }
+
+        // Feedback System
+        class FeedbackSystem {
+            collectFeedback(isCorrect, plantName) {
+                const feedback = {
+                    isCorrect,
+                    plantName,
+                    timestamp: new Date().toISOString()
+                };
+
+                const allFeedback = JSON.parse(localStorage.getItem('plantFeedback') || '[]');
+                allFeedback.push(feedback);
+                localStorage.setItem('plantFeedback', JSON.stringify(allFeedback));
+
+                // Show thank you
+                const msg = document.createElement('div');
+                msg.className = 'success';
+                msg.textContent = '🙏 ขอบคุณสำหรับข้อมูล!';
+                document.getElementById('result').appendChild(msg);
+                setTimeout(() => msg.remove(), 3000);
+            }
+        }
+
+        // Global instance
         let taddoAI;
 
+        // Global functions
         function takePhoto() {
-            if (taddoAI && !taddoAI.isLoading) {
+            if (!taddoAI.isLoading) {
                 document.getElementById('photoInput').click();
             }
         }
 
         function selectFromGallery() {
-            if (taddoAI && !taddoAI.isLoading) {
+            if (!taddoAI.isLoading) {
                 document.getElementById('galleryInput').click();
             }
         }
 
         function newScan() {
-            if (taddoAI) {
-                taddoAI.newScan();
-            }
+            document.getElementById('result').classList.remove('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function shareResult() {
-            if (taddoAI) {
-                taddoAI.shareResult();
+            if (!taddoAI.currentResult) return;
+            
+            const text = `🌱 พบ: ${taddoAI.currentResult.name}\nความแม่นยำ: ${taddoAI.currentResult.confidence}%\nวิเคราะห์โดย TADDO AI`;
+            
+            if (navigator.share) {
+                navigator.share({ title: 'TADDO AI', text, url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(text);
+                taddoAI.showMessage('📋 คัดลอกข้อมูลแล้ว', 'success');
             }
         }
 
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
+        function submitFeedback(isCorrect) {
+            if (taddoAI && taddoAI.currentResult) {
+                taddoAI.feedback.collectFeedback(isCorrect, taddoAI.currentResult.name);
+            }
+        }
+
+        function exportData() {
+            const stats = JSON.parse(localStorage.getItem('taddoStats') || '{}');
+            const logs = JSON.parse(localStorage.getItem('researchLogs') || '[]');
+            const feedback = JSON.parse(localStorage.getItem('plantFeedback') || '[]');
+
+            const exportData = {
+                stats,
+                logs,
+                feedback,
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `taddo-data-${Date.now()}.json`;
+            a.click();
+            
+            taddoAI.showMessage('📊 ส่งออกข้อมูลสำเร็จ', 'success');
+        }
+
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
             taddoAI = new TaddoAI();
-            console.log('🌱 TADDO AI v2.0 initialized successfully');
+            console.log('🌱 TADDO AI Initialized - Provincial Edition');
         });
     </script>
 </body>
