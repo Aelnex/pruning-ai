@@ -37,6 +37,144 @@
             animation: gradientShift 20s ease-in-out infinite;
         }
 
+        /* NEW: Disclaimer Banner Styles */
+        .disclaimer-banner {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 3px solid #b71c1c;
+            position: relative;
+            z-index: 1000;
+            animation: warningPulse 2s ease-in-out infinite;
+        }
+
+        .disclaimer-title {
+            font-size: 1.2em;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .disclaimer-text {
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .disclaimer-warning {
+            font-size: 0.85em;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        /* NEW: Competition Project Section Styles */
+        .competition-section {
+            background: linear-gradient(135deg, #1565c0, #1976d2);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .competition-title {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .competition-subtitle {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .competition-description {
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #f5f5f5;
+        }
+
+        .competition-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .competition-feature {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* NEW: Future Vision Section Styles */
+        .future-vision {
+            background: linear-gradient(135deg, #4a148c, #6a1b9a);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .vision-title {
+            font-size: 1.3em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .vision-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .vision-item {
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 0.95em;
+            line-height: 1.4;
+            border-left: 4px solid #e1bee7;
+            transition: all 0.3s ease;
+        }
+
+        .vision-item:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.3);
+        }
+
+        /* NEW: Warning Animation */
+        @keyframes warningPulse {
+            0%, 100% { 
+                box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(211, 47, 47, 0.8);
+                transform: scale(1.002);
+            }
+        }
+
         .particles {
             position: fixed;
             top: 0;
@@ -977,6 +1115,7 @@
             .action-buttons { flex-direction: column; }
             .feedback-buttons { flex-direction: column; align-items: center; }
             .notice-features { flex-direction: column; gap: 8px; }
+            .competition-features { grid-template-columns: 1fr; }
         }
 
         @media print {
@@ -987,6 +1126,13 @@
     </style>
 </head>
 <body>
+    <!-- NEW: Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        <div class="disclaimer-title">⚠️ คำเตือนสำคัญ - ระบบสาธิต ⚠️</div>
+        <div class="disclaimer-text">นี่เป็นระบบต้นแบบสำหรับการศึกษาและการแข่งขันเท่านั้น ไม่ควรใช้เป็นเครื่องมือวินิจฉัยจริง</div>
+        <div class="disclaimer-warning">⚠️ แนะนำให้ใช้ภาพลำไยจริงและปรึกษาผู้เชี่ยวชาญด้านการเกษตรสำหรับการวินิจฉัยที่แม่นยำ ⚠️</div>
+    </div>
+
     <!-- Animated Background Elements -->
     <div class="particles">
         <div class="particle" style="width: 4px; height: 4px; left: 8%; animation-delay: 0s;"></div>
@@ -1016,6 +1162,22 @@
             <div class="badge">วิเคราะห์โรคลำไย 4+ ประเภท</div>
             <div class="badge ai-badge">🤖 TADDO AI v2.1</div>
             <div class="ai-mode-indicator" id="aiModeIndicator">🔄 กำลังเตรียมระบบ...</div>
+        </div>
+
+        <!-- NEW: Competition Project Section -->
+        <div class="competition-section">
+            <div class="competition-title">🏆 โครงการแข่งขันนวัตกรรม</div>
+            <div class="competition-subtitle">ระบบต้นแบบ AI สำหรับช่วยเหลือเกษตรกรไทย</div>
+            <div class="competition-description">
+                พัฒนาเพื่อการศึกษาและการแข่งขันระดับจังหวัด<br>
+                นำเสนอแนวทางการใช้เทคโนโลยี AI ในภาคเกษตรอย่างยั่งยืน
+            </div>
+            <div class="competition-features">
+                <div class="competition-feature">✓ โครงการเพื่อการศึกษา</div>
+                <div class="competition-feature">✓ ต้นแบบที่สามารถพัฒนาต่อได้</div>
+                <div class="competition-feature">✓ เทคโนโลยีแบบไฮบริด</div>
+                <div class="competition-feature">✓ เป็นมิตรกับสิ่งแวดล้อม</div>
+            </div>
         </div>
 
         <!-- Production Notice -->
@@ -1129,6 +1291,20 @@
                 <button class="share-btn" onclick="shareResult()">📤 แชร์ผล</button>
                 <button class="export-btn no-print" onclick="exportData()">📊 ส่งออกข้อมูล</button>
             </div>
+        </div>
+
+        <!-- NEW: Future Vision Section -->
+        <div class="future-vision">
+            <div class="vision-title">
+                💡 วิสัยทัศน์การพัฒนาต่อ
+            </div>
+            <ul class="vision-list">
+                <li class="vision-item">• พัฒนา Mobile App สำหรับเกษตรกรใช้งานในไร่</li>
+                <li class="vision-item">• เชื่อมต่อกับระบบให้คำปรึกษาออนไลน์จากผู้เชี่ยวชาญ</li>
+                <li class="vision-item">• เพิ่มประสิทธิภาพการวิเคราะห์ภาพด้วย Deep Learning</li>
+                <li class="vision-item">• ขยายสู่พืชผลไร่อื่นๆ ในภาคเกษตรไทย</li>
+                <li class="vision-item">• พัฒนาระบบการติดตามและบันทึกข้อมูลในระยะยาว</li>
+            </ul>
         </div>
 
         <div class="credits">
@@ -1957,6 +2133,13 @@
                     this.showMessage('ไม่มีสัญญาณอินเทอร์เน็ต - ระบบยังทำงานได้ในโหมดออฟไลน์', 'warning');
                 } else {
                     this.showMessage(error.message || 'เกิดข้อผิดพลาดในการวิเคราะห์ กรุณาลองใหม่อีกครั้ง', 'error');
+                }
+            }
+
+            // NEW: Handle feedback method added
+            handleFeedback(isCorrect) {
+                if (this.currentResult && this.feedback) {
+                    this.feedback.collectFeedback(isCorrect, this.currentResult);
                 }
             }
 
