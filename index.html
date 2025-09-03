@@ -2263,10 +2263,26 @@
 
         function newScan() {
             document.getElementById('result').classList.remove('show');
+            
+            // Reset feedback buttons
+            const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
+            feedbackButtons.forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            
+            // Clear current result
+            if (taddoAI) {
+                taddoAI.currentResult = null;
+            }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             setTimeout(() => {
-                taddoAI.showMessage('📸 พร้อมสำหรับการวิเคราะห์ครั้งใหม่', 'info');
+                if (taddoAI) {
+                    taddoAI.showMessage('📸 พร้อมสำหรับการวิเคราะห์ครั้งใหม่', 'info');
+                }
             }, 500);
         }
 
