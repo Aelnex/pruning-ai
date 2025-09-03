@@ -2132,7 +2132,7 @@
 
         function submitFeedback(isCorrect) {
             if (taddoAI?.currentResult && taddoAI?.feedback) {
-                taddoAI.feedback.collectFeedback(isCorrect, taddoAI.currentResult);
+                taddoAI.handleFeedback(isCorrect);
             }
         }
 
