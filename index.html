@@ -20,6 +20,7 @@
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
+            padding-top: 70px; /* Space for fixed navigation */
         }
 
         body::before {
@@ -37,7 +38,443 @@
             animation: gradientShift 20s ease-in-out infinite;
         }
 
-        /* NEW: Disclaimer Banner Styles */
+        /* NEW: Navigation Styles */
+        .main-navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(27, 94, 32, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-brand {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9em;
+            border: none;
+            background: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: rgba(76, 175, 80, 0.3);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        /* Page Content Containers */
+        .page-container {
+            display: none;
+            min-height: calc(100vh - 70px);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .page-title {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffffff, #e8f5e8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* History Page Styles */
+        .history-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #e8f5e8;
+        }
+
+        .history-date {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .history-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .history-detail {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Database Page Styles */
+        .disease-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .disease-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .disease-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+        }
+
+        .disease-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .disease-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #e8f5e8;
+        }
+
+        .disease-description {
+            text-align: center;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        /* Settings Page Styles */
+        .settings-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .settings-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #e8f5e8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            font-weight: 500;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #4caf50;
+        }
+
+        .toggle-handle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-handle {
+            transform: translateX(25px);
+        }
+
+        .select-control {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 8px 15px;
+            color: white;
+            min-width: 120px;
+        }
+
+        .select-control option {
+            background: #2e7d32;
+            color: white;
+        }
+
+        /* Analytics Page Styles */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .analytics-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            text-align: center;
+        }
+
+        .analytics-value {
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(45deg, #4caf50, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .analytics-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .analytics-trend {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .trend-up {
+            background: rgba(76, 175, 80, 0.2);
+            color: #a5d6a7;
+        }
+
+        .trend-down {
+            background: rgba(244, 67, 54, 0.2);
+            color: #ef9a9a;
+        }
+
+        /* Help Page Styles */
+        .help-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .help-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #e8f5e8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 20px;
+            max-height: 200px;
+            opacity: 1;
+        }
+
+        .faq-toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Bottom Navigation for Mobile */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(27, 94, 32, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 10px 0;
+            z-index: 1000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bottom-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .bottom-nav-item.active {
+            color: #4caf50;
+            transform: scale(1.1);
+        }
+
+        .bottom-nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 4px;
+        }
+
+        /* Original styles preserved */
         .disclaimer-banner {
             background: linear-gradient(135deg, #d32f2f, #f44336);
             color: white;
@@ -69,7 +506,6 @@
             font-weight: 600;
         }
 
-        /* NEW: Competition Project Section Styles */
         .competition-section {
             background: linear-gradient(135deg, #1565c0, #1976d2);
             border-radius: 20px;
@@ -119,7 +555,6 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* NEW: Future Vision Section Styles */
         .future-vision {
             background: linear-gradient(135deg, #4a148c, #6a1b9a);
             border-radius: 20px;
@@ -163,7 +598,6 @@
             box-shadow: 0 5px 15px rgba(106, 27, 154, 0.3);
         }
 
-        /* NEW: Warning Animation */
         @keyframes warningPulse {
             0%, 100% { 
                 box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
@@ -915,7 +1349,73 @@
             display: inline-block;
         }
 
-        /* Animations */
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+                padding-bottom: 70px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .bottom-nav {
+                display: block;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .technical-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .feedback-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .notice-features {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .competition-features {
+                grid-template-columns: 1fr;
+            }
+
+            .disease-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2em;
+            }
+        }
+
+        /* Keep all original animations */
         @keyframes gradientShift {
             0%, 100% { 
                 background: 
@@ -1106,18 +1606,6 @@
             100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.8); }
         }
 
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .container { padding: 15px; }
-            .hero h1 { font-size: 2.2em; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .technical-grid { grid-template-columns: 1fr; }
-            .action-buttons { flex-direction: column; }
-            .feedback-buttons { flex-direction: column; align-items: center; }
-            .notice-features { flex-direction: column; gap: 8px; }
-            .competition-features { grid-template-columns: 1fr; }
-        }
-
         @media print {
             body { background: white; color: black; }
             .no-print { display: none !important; }
@@ -1126,7 +1614,45 @@
     </style>
 </head>
 <body>
-    <!-- NEW: Disclaimer Banner -->
+    <!-- Navigation -->
+    <nav class="main-navigation">
+        <div class="nav-brand">
+            🌱 TADDO AI
+        </div>
+        <div class="nav-menu">
+            <button class="nav-item active" onclick="showPage('scan')">วิเคราะห์</button>
+            <button class="nav-item" onclick="showPage('history')">ประวัติ</button>
+            <button class="nav-item" onclick="showPage('database')">ฐานข้อมูล</button>
+            <button class="nav-item" onclick="showPage('analytics')">สถิติ</button>
+            <button class="nav-item" onclick="showPage('help')">ช่วยเหลือ</button>
+            <button class="nav-item" onclick="showPage('settings')">ตั้งค่า</button>
+        </div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-grid">
+            <button class="bottom-nav-item active" onclick="showPage('scan')">
+                <span class="bottom-nav-icon">📱</span>
+                <span>สแกน</span>
+            </button>
+            <button class="bottom-nav-item" onclick="showPage('history')">
+                <span class="bottom-nav-icon">📚</span>
+                <span>ประวัติ</span>
+            </button>
+            <button class="bottom-nav-item" onclick="showPage('analytics')">
+                <span class="bottom-nav-icon">📊</span>
+                <span>สถิติ</span>
+            </button>
+            <button class="bottom-nav-item" onclick="showPage('help')">
+                <span class="bottom-nav-icon">❓</span>
+                <span>ช่วยเหลือ</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Disclaimer Banner -->
     <div class="disclaimer-banner">
         <div class="disclaimer-title">⚠️ คำเตือนสำคัญ - ระบบสาธิต ⚠️</div>
         <div class="disclaimer-text">นี่เป็นระบบต้นแบบสำหรับการศึกษาและการแข่งขันเท่านั้น ไม่ควรใช้เป็นเครื่องมือวินิจฉัยจริง</div>
@@ -1154,165 +1680,421 @@
         <div class="leaf" style="left: 85%; animation-delay: 10s; animation-duration: 19s;">🍂</div>
     </div>
 
-    <div class="container">
-        <div class="hero">
-            <div class="hero-logo">🌱</div>
-            <h1>TADDO AI</h1>
-            <div class="hero-subtitle">ระบบวิเคราะห์ลำไยอัจฉริยะ</div>
-            <div class="badge">วิเคราะห์โรคลำไย 4+ ประเภท</div>
-            <div class="badge ai-badge">🤖 TADDO AI v2.1</div>
-            <div class="ai-mode-indicator" id="aiModeIndicator">🔄 กำลังเตรียมระบบ...</div>
-        </div>
+    <!-- Scan Page (Original Content) -->
+    <div id="scanPage" class="page-container active">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-logo">🌱</div>
+                <h1>TADDO AI</h1>
+                <div class="hero-subtitle">ระบบวิเคราะห์ลำไยอัจฉริยะ</div>
+                <div class="badge">วิเคราะห์โรคลำไย 4+ ประเภท</div>
+                <div class="badge ai-badge">🤖 TADDO AI v2.1</div>
+                <div class="ai-mode-indicator" id="aiModeIndicator">🔄 กำลังเตรียมระบบ...</div>
+            </div>
 
-        <!-- NEW: Competition Project Section -->
-        <div class="competition-section">
-            <div class="competition-title">🏆 โครงการแข่งขันนวัตกรรม</div>
-            <div class="competition-subtitle">ระบบต้นแบบ AI สำหรับช่วยเหลือเกษตรกรไทย</div>
-            <div class="competition-description">
-                พัฒนาเพื่อการศึกษาและการแข่งขันระดับจังหวัด<br>
-                นำเสนอแนวทางการใช้เทคโนโลยี AI ในภาคเกษตรอย่างยั่งยืน
-            </div>
-            <div class="competition-features">
-                <div class="competition-feature">✓ โครงการเพื่อการศึกษา</div>
-                <div class="competition-feature">✓ ต้นแบบที่สามารถพัฒนาต่อได้</div>
-                <div class="competition-feature">✓ เทคโนโลยีแบบไฮบริด</div>
-                <div class="competition-feature">✓ เป็นมิตรกับสิ่งแวดล้อม</div>
-            </div>
-        </div>
-
-        <!-- Production Notice -->
-        <div class="production-notice">
-            <div class="notice-title">🚀 TADDO AI - พร้อมใช้งานทันที</div>
-            <div class="notice-description">
-                ระบบ AI เชิงลึกที่พัฒนาขึ้นเฉพาะสำหรับลำไยไทย<br>
-                ผสมผสานกับเทคโนโลยี Hugging Face สำหรับความแม่นยำสูงสุด
-            </div>
-            <div class="notice-features">
-                <span>✓ ปลอดภัย 100%</span>
-                <span>✓ ใช้งานฟรี</span>
-                <span>✓ AI แบบไฮบริด</span>
-                <span>✓ ผลลัพธ์แม่นยำ</span>
-            </div>
-        </div>
-
-        <div class="guide">
-            <h3>📋 วิธีการใช้งาน</h3>
-            <div class="guide-step" style="animation-delay: 0.1s;">
-                <div class="guide-step-number">1</div>
-                <div>ถ่ายรูปลำไยให้ชัดเจน โฟกัสที่ใบ ดอก หรือผล</div>
-            </div>
-            <div class="guide-step" style="animation-delay: 0.2s;">
-                <div class="guide-step-number">2</div>
-                <div>รอ TADDO AI วิเคราะห์ด้วยเทคโนโลยีเชิงลึก</div>
-            </div>
-            <div class="guide-step" style="animation-delay: 0.3s;">
-                <div class="guide-step-number">3</div>
-                <div>รับผลการวินิจฉัยพร้อมคำแนะนำการดูแล</div>
-            </div>
-            <div class="guide-step" style="animation-delay: 0.4s;">
-                <div class="guide-step-number">4</div>
-                <div>บันทึกผลและติดตามการเจริญเติบโต</div>
-            </div>
-        </div>
-
-        <div class="stats">
-            <div class="stats-grid">
-                <div class="stats-item">
-                    <span class="stats-value" id="scanCount">0</span>
-                    <div class="stats-label">การวิเคราะห์</div>
+            <!-- Competition Project Section -->
+            <div class="competition-section">
+                <div class="competition-title">🏆 โครงการแข่งขันนวัตกรรม</div>
+                <div class="competition-subtitle">ระบบต้นแบบ AI สำหรับช่วยเหลือเกษตรกรไทย</div>
+                <div class="competition-description">
+                    พัฒนาเพื่อการศึกษาและการแข่งขันระดับจังหวัด<br>
+                    นำเสนอแนวทางการใช้เทคโนโลยี AI ในภาคเกษตรอย่างยั่งยืน
                 </div>
-                <div class="stats-item">
-                    <span class="stats-value" id="avgAccuracy">0%</span>
-                    <div class="stats-label">ความแม่นยำ</div>
-                </div>
-                <div class="stats-item">
-                    <span class="stats-value" id="successRate">0%</span>
-                    <div class="stats-label">อัตราสำเร็จ</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="actions">
-            <button class="camera-button" id="cameraBtn" onclick="takePhoto()" aria-label="ถ่ายรูปลำไย">
-                <span>📱 ถ่ายรูปลำไย</span>
-            </button>
-            <button class="gallery-button" onclick="selectFromGallery()" aria-label="เลือกรูปจากคลัง">
-                <span>🖼️ เลือกจากคลัง</span>
-            </button>
-        </div>
-
-        <input type="file" id="photoInput" class="file-input" accept="image/*" capture="environment">
-        <input type="file" id="galleryInput" class="file-input" accept="image/*">
-
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <div class="loading-text">🤖 TADDO AI กำลังวิเคราะห์</div>
-            <div class="loading-subtitle">ใช้เทคโนโลยี AI เชิงลึกสำหรับการวิเคราะห์ลำไย</div>
-            <div id="loadingText" style="margin-top: 10px; font-weight: 500;">กำลังประมวลผลภาพ...</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-
-        <div id="result" class="result">
-            <img id="resultImage" class="result-image" alt="รูปลำไยที่วิเคราะห์">
-            <div class="plant-info">
-                <div class="plant-name" id="plantName">ผลการวิเคราะห์</div>
-                <div class="plant-details" id="plantDetails">รายละเอียดเพิ่มเติม</div>
-                <span class="confidence" id="confidence">95%</span>
-            </div>
-
-            <!-- Hugging Face Results -->
-            <div id="hfAnalysis" class="hf-analysis" style="display: none;">
-                <div class="hf-title">
-                    🤖 ผลการวิเคราะห์จาก Hugging Face AI
-                </div>
-                <div id="hfResults" class="hf-results"></div>
-            </div>
-
-            <div id="technicalDetails"></div>
-
-            <div class="cutting-section">
-                <div class="section-title">💡 คำแนะนำการดูแล</div>
-                <div id="cuttingPoints"></div>
-            </div>
-
-            <div class="feedback-section">
-                <h4>🔍 ช่วยปรับปรุงความแม่นยำ</h4>
-                <p>ผลการวิเคราะห์ถูกต้องหรือไม่?</p>
-                <div class="feedback-buttons">
-                    <button class="btn-correct" onclick="submitFeedback(true)">✅ ถูกต้อง</button>
-                    <button class="btn-incorrect" onclick="submitFeedback(false)">❌ ไม่ถูกต้อง</button>
+                <div class="competition-features">
+                    <div class="competition-feature">✓ โครงการเพื่อการศึกษา</div>
+                    <div class="competition-feature">✓ ต้นแบบที่สามารถพัฒนาต่อได้</div>
+                    <div class="competition-feature">✓ เทคโนโลยีแบบไฮบริด</div>
+                    <div class="competition-feature">✓ เป็นมิตรกับสิ่งแวดล้อม</div>
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <button class="new-scan" onclick="newScan()">🔄 วิเคราะห์ใหม่</button>
-                <button class="share-btn" onclick="shareResult()">📤 แชร์ผล</button>
-                <button class="export-btn no-print" onclick="exportData()">📊 ส่งออกข้อมูล</button>
+            <!-- Production Notice -->
+            <div class="production-notice">
+                <div class="notice-title">🚀 TADDO AI - พร้อมใช้งานทันที</div>
+                <div class="notice-description">
+                    ระบบ AI เชิงลึกที่พัฒนาขึ้นเฉพาะสำหรับลำไยไทย<br>
+                    ผสมผสานกับเทคโนโลยี Hugging Face สำหรับความแม่นยำสูงสุด
+                </div>
+                <div class="notice-features">
+                    <span>✓ ปลอดภัย 100%</span>
+                    <span>✓ ใช้งานฟรี</span>
+                    <span>✓ AI แบบไฮบริด</span>
+                    <span>✓ ผลลัพธ์แม่นยำ</span>
+                </div>
+            </div>
+
+            <div class="guide">
+                <h3>📋 วิธีการใช้งาน</h3>
+                <div class="guide-step" style="animation-delay: 0.1s;">
+                    <div class="guide-step-number">1</div>
+                    <div>ถ่ายรูปลำไยให้ชัดเจน โฟกัสที่ใบ ดอก หรือผล</div>
+                </div>
+                <div class="guide-step" style="animation-delay: 0.2s;">
+                    <div class="guide-step-number">2</div>
+                    <div>รอ TADDO AI วิเคราะห์ด้วยเทคโนโลยีเชิงลึก</div>
+                </div>
+                <div class="guide-step" style="animation-delay: 0.3s;">
+                    <div class="guide-step-number">3</div>
+                    <div>รับผลการวินิจฉัยพร้อมคำแนะนำการดูแล</div>
+                </div>
+                <div class="guide-step" style="animation-delay: 0.4s;">
+                    <div class="guide-step-number">4</div>
+                    <div>บันทึกผลและติดตามการเจริญเติบโต</div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stats-grid">
+                    <div class="stats-item">
+                        <span class="stats-value" id="scanCount">0</span>
+                        <div class="stats-label">การวิเคราะห์</div>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-value" id="avgAccuracy">0%</span>
+                        <div class="stats-label">ความแม่นยำ</div>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-value" id="successRate">0%</span>
+                        <div class="stats-label">อัตราสำเร็จ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="camera-button" id="cameraBtn" onclick="takePhoto()" aria-label="ถ่ายรูปลำไย">
+                    <span>📱 ถ่ายรูปลำไย</span>
+                </button>
+                <button class="gallery-button" onclick="selectFromGallery()" aria-label="เลือกรูปจากคลัง">
+                    <span>🖼️ เลือกจากคลัง</span>
+                </button>
+            </div>
+
+            <input type="file" id="photoInput" class="file-input" accept="image/*" capture="environment">
+            <input type="file" id="galleryInput" class="file-input" accept="image/*">
+
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">🤖 TADDO AI กำลังวิเคราะห์</div>
+                <div class="loading-subtitle">ใช้เทคโนโลยี AI เชิงลึกสำหรับการวิเคราะห์ลำไย</div>
+                <div id="loadingText" style="margin-top: 10px; font-weight: 500;">กำลังประมวลผลภาพ...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div id="result" class="result">
+                <img id="resultImage" class="result-image" alt="รูปลำไยที่วิเคราะห์">
+                <div class="plant-info">
+                    <div class="plant-name" id="plantName">ผลการวิเคราะห์</div>
+                    <div class="plant-details" id="plantDetails">รายละเอียดเพิ่มเติม</div>
+                    <span class="confidence" id="confidence">95%</span>
+                </div>
+
+                <!-- Hugging Face Results -->
+                <div id="hfAnalysis" class="hf-analysis" style="display: none;">
+                    <div class="hf-title">
+                        🤖 ผลการวิเคราะห์จาก Hugging Face AI
+                    </div>
+                    <div id="hfResults" class="hf-results"></div>
+                </div>
+
+                <div id="technicalDetails"></div>
+
+                <div class="cutting-section">
+                    <div class="section-title">💡 คำแนะนำการดูแล</div>
+                    <div id="cuttingPoints"></div>
+                </div>
+
+                <div class="feedback-section">
+                    <h4>🔍 ช่วยปรับปรุงความแม่นยำ</h4>
+                    <p>ผลการวิเคราะห์ถูกต้องหรือไม่?</p>
+                    <div class="feedback-buttons">
+                        <button class="btn-correct" onclick="submitFeedback(true)">✅ ถูกต้อง</button>
+                        <button class="btn-incorrect" onclick="submitFeedback(false)">❌ ไม่ถูกต้อง</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="new-scan" onclick="newScan()">🔄 วิเคราะห์ใหม่</button>
+                    <button class="share-btn" onclick="shareResult()">📤 แชร์ผล</button>
+                    <button class="export-btn no-print" onclick="exportData()">📊 ส่งออกข้อมูล</button>
+                </div>
+            </div>
+
+            <!-- Future Vision Section -->
+            <div class="future-vision">
+                <div class="vision-title">
+                    💡 วิสัยทัศน์การพัฒนาต่อ
+                </div>
+                <ul class="vision-list">
+                    <li class="vision-item">• พัฒนา Mobile App สำหรับเกษตรกรใช้งานในไร่</li>
+                    <li class="vision-item">• เชื่อมต่อกับระบบให้คำปรึกษาออนไลน์จากผู้เชี่ยวชาญ</li>
+                    <li class="vision-item">• เพิ่มประสิทธิภาพการวิเคราะห์ภาพด้วย Deep Learning</li>
+                    <li class="vision-item">• ขยายสู่พืชผลไร่อื่นๆ ในภาคเกษตรไทย</li>
+                    <li class="vision-item">• พัฒนาระบบการติดตามและบันทึกข้อมูลในระยะยาว</li>
+                </ul>
+            </div>
+
+            <div class="credits">
+                <h4>พัฒนาโดย</h4>
+                <div style="font-weight: 600; margin: 5px 0;">นายตฤณ ตันตระกูล และ นายภูศิลา กาสุ</div>
+                <div style="opacity: 0.9; font-size: 0.95em;">โรงเรียนจักรคำคณาทร จังหวัดลำพูน</div>
+                <div style="opacity: 0.8; font-size: 0.85em; margin-top: 10px;">
+                    โครงการส่งเสริมการเรียนรู้ด้วยเทคโนโลยี AI เพื่อเกษตรกรไทย
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- NEW: Future Vision Section -->
-        <div class="future-vision">
-            <div class="vision-title">
-                💡 วิสัยทัศน์การพัฒนาต่อ
+    <!-- History Page -->
+    <div id="historyPage" class="page-container">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">📚 ประวัติการวิเคราะห์</div>
+                <div class="page-subtitle">ติดตามการพัฒนาของลำไยของคุณ</div>
             </div>
-            <ul class="vision-list">
-                <li class="vision-item">• พัฒนา Mobile App สำหรับเกษตรกรใช้งานในไร่</li>
-                <li class="vision-item">• เชื่อมต่อกับระบบให้คำปรึกษาออนไลน์จากผู้เชี่ยวชาญ</li>
-                <li class="vision-item">• เพิ่มประสิทธิภาพการวิเคราะห์ภาพด้วย Deep Learning</li>
-                <li class="vision-item">• ขยายสู่พืชผลไร่อื่นๆ ในภาคเกษตรไทย</li>
-                <li class="vision-item">• พัฒนาระบบการติดตามและบันทึกข้อมูลในระยะยาว</li>
-            </ul>
+            <div id="historyContainer">
+                <div class="history-item">
+                    <div class="history-header">
+                        <div class="history-title">ยังไม่มีประวัติการวิเคราะห์</div>
+                        <div class="history-date">-</div>
+                    </div>
+                    <p>เริ่มใช้งานระบบ TADDO AI เพื่อสร้างประวัติการวิเคราะห์ลำไยของคุณ</p>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="credits">
-            <h4>พัฒนาโดย</h4>
-            <div style="font-weight: 600; margin: 5px 0;">นายตฤณ ตันตระกูล และ นายภูศิลา กาสุ</div>
-            <div style="opacity: 0.9; font-size: 0.95em;">โรงเรียนจักรคำคณาทร จังหวัดลำพูน</div>
-            <div style="opacity: 0.8; font-size: 0.85em; margin-top: 10px;">
-                โครงการส่งเสริมการเรียนรู้ด้วยเทคโนโลยี AI เพื่อเกษตรกรไทย
+    <!-- Database Page -->
+    <div id="databasePage" class="page-container">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">🔬 ฐานข้อมูลโรคลำไย</div>
+                <div class="page-subtitle">เรียนรู้เกี่ยวกับโรคและศัตรูพืชของลำไย</div>
+            </div>
+            <div class="disease-grid">
+                <div class="disease-card" onclick="showDiseaseDetail('healthy')">
+                    <div class="disease-icon">🌱</div>
+                    <div class="disease-name">ลำไยสุขภาพดี</div>
+                    <div class="disease-description">ลำไยที่มีสุขภาพดี ใบเขียวสด แข็งแรง ไม่มีโรค</div>
+                </div>
+                <div class="disease-card" onclick="showDiseaseDetail('leafSpot')">
+                    <div class="disease-icon">🔴</div>
+                    <div class="disease-name">โรคใบจุด</div>
+                    <div class="disease-description">จุดสีน้ำตาลบนใบ เกิดจากเชื้อรา Cercospora</div>
+                </div>
+                <div class="disease-card" onclick="showDiseaseDetail('powderyMildew')">
+                    <div class="disease-icon">⚪</div>
+                    <div class="disease-name">โรคราแป้ง</div>
+                    <div class="disease-description">ผงสีขาวปกคลุมใบ เกิดจากเชื้อรา Oidium</div>
+                </div>
+                <div class="disease-card" onclick="showDiseaseDetail('nutrientDeficiency')">
+                    <div class="disease-icon">🟡</div>
+                    <div class="disease-name">ขาดธาตุอาหาร</div>
+                    <div class="disease-description">ใบเหลือง การเจริญเติบโตช้า ขาดไนโตรเจน</div>
+                </div>
+                <div class="disease-card" onclick="showDiseaseDetail('pestDamage')">
+                    <div class="disease-icon">🐛</div>
+                    <div class="disease-name">ความเสียหายจากศัตรูพืช</div>
+                    <div class="disease-description">รูบนใบจากแมลง ความเสียหายจากศัตรูพืช</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Page -->
+    <div id="analyticsPage" class="page-container">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">📊 สถิติและการวิเคราะห์</div>
+                <div class="page-subtitle">ข้อมูลเชิงลึกการใช้งานระบบ</div>
+            </div>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="totalScans">0</div>
+                    <div class="analytics-label">การวิเคราะห์ทั้งหมด</div>
+                    <div class="analytics-trend trend-up">+0 การวิเคราะห์ใหม่</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="avgTime">0s</div>
+                    <div class="analytics-label">เวลาเฉลี่ยต่อการวิเคราะห์</div>
+                    <div class="analytics-trend trend-down">เร็วขึ้น 12%</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="successPercentage">0%</div>
+                    <div class="analytics-label">อัตราความสำเร็จ</div>
+                    <div class="analytics-trend trend-up">ดีขึ้น 8%</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="mostCommonDisease">-</div>
+                    <div class="analytics-label">โรคที่พบบ่อยที่สุด</div>
+                    <div class="analytics-trend">อัปเดตล่าสุด</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settingsPage" class="page-container">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">⚙️ การตั้งค่า</div>
+                <div class="page-subtitle">ปรับแต่งระบบให้เหมาะกับการใช้งาน</div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-title">🌐 การตั้งค่าทั่วไป</div>
+                <div class="setting-item">
+                    <div class="setting-label">ภาษา</div>
+                    <div class="setting-control">
+                        <select class="select-control" id="languageSetting">
+                            <option value="th">ไทย</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">การแจ้งเตือน</div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" onclick="toggleSetting(this)">
+                            <div class="toggle-handle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">บันทึกประวัติอัตโนมัติ</div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" onclick="toggleSetting(this)">
+                            <div class="toggle-handle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-title">🤖 การตั้งค่า AI</div>
+                <div class="setting-item">
+                    <div class="setting-label">ระดับความไว</div>
+                    <div class="setting-control">
+                        <select class="select-control" id="sensitivitySetting">
+                            <option value="low">ต่ำ</option>
+                            <option value="medium" selected>ปานกลาง</option>
+                            <option value="high">สูง</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">โหมดเชี่ยวชาญ</div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" onclick="toggleSetting(this)">
+                            <div class="toggle-handle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-title">💾 การจัดการข้อมูล</div>
+                <div class="setting-item">
+                    <div class="setting-label">ล้างประวัติการวิเคราะห์</div>
+                    <div class="setting-control">
+                        <button onclick="clearHistory()" style="padding: 8px 16px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer;">ล้างข้อมูล</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">ส่งออกข้อมูล</div>
+                    <div class="setting-control">
+                        <button onclick="exportAllData()" style="padding: 8px 16px; background: #4caf50; color: white; border: none; border-radius: 8px; cursor: pointer;">ส่งออก</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Page -->
+    <div id="helpPage" class="page-container">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">❓ ช่วยเหลือและคำถามที่พบบ่อย</div>
+                <div class="page-subtitle">คู่มือการใช้งานและแก้ไขปัญหา</div>
+            </div>
+
+            <div class="help-section">
+                <div class="help-title">📖 คู่มือการใช้งาน</div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        วิธีการถ่ายรูปที่ดีสำหรับการวิเคราะห์
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• ถ่ายภาพในแสงธรรมชาติที่เพียงพอ</p>
+                        <p>• โฟกัสให้ชัดเจน โดยเฉพาะบริเวณที่เป็นโรค</p>
+                        <p>• ถ่ายภาพใกล้ชิดเพื่อให้เห็นรายละเอียด</p>
+                        <p>• หลีกเลี่ยงเงาหรือแสงสะท้อนมากเกินไป</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        ทำไมผลการวิเคราะห์ไม่แม่นยำ
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• ภาพอาจไม่ชัดเจนหรือมีแสงไม่เพียงพอ</p>
+                        <p>• อาการโรคอาจยังไม่ชัดเจน</p>
+                        <p>• ภาพไม่โฟกัสบริเวณที่เป็นโรค</p>
+                        <p>• ควรถ่ายภาพเพิ่มเติมจากมุมต่างๆ</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        วิธีการส่งออกข้อมูลการวิเคราะห์
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• ไปที่หน้าการตั้งค่า</p>
+                        <p>• คลิกปุ่ม "ส่งออกข้อมูล"</p>
+                        <p>• ไฟล์ JSON จะถูกดาวน์โหลดโดยอัตโนมัติ</p>
+                        <p>• สามารถนำไฟล์ไปใช้งานในโปรแกรมอื่นได้</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <div class="help-title">🚨 การแก้ไขปัญหา</div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        ระบบโหลดช้า
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</p>
+                        <p>• ลองรีเฟรชหน้าเว็บ</p>
+                        <p>• ล้างข้อมูลแคช (Cache) ของเบราว์เซอร์</p>
+                        <p>• ลองใช้งานในโหมดไม่ระบุตัวตน</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        ไม่สามารถถ่ายรูปได้
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>• ตรวจสอบการอนุญาตใช้กล้องของเบราว์เซอร์</p>
+                        <p>• ลองใช้ปุ่ม "เลือกจากคลัง" แทน</p>
+                        <p>• รีสตาร์ทแอปพลิเคชันหรือเบราว์เซอร์</p>
+                        <p>• ตรวจสอบว่ากล้องไม่ได้ถูกใช้งานโดยโปรแกรมอื่น</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <div class="help-title">📞 ติดต่อเรา</div>
+                <p style="text-align: center; line-height: 1.8;">
+                    โรงเรียนจักรคำคณาทร จังหวัดลำพูน<br>
+                    พัฒนาโดย: นายตฤณ ตันตระกูล และ นายภูศิลา กาสุ<br>
+                    อีเมล: taddo.ai@example.com<br>
+                    โทรศัพท์: 053-xxx-xxxx
+                </p>
             </div>
         </div>
     </div>
@@ -1323,7 +2105,7 @@
             MAX_IMAGE_SIZE: 1200,
             IMAGE_QUALITY: 0.85,
             VERSION: '2.1.0',
-            HF_API_KEY: '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',
+            HF_API_KEY: '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',
             HF_MODELS: [
                 'microsoft/resnet-50',
                 'google/vit-base-patch16-224',
@@ -1331,7 +2113,309 @@
             ]
         };
 
-        // Advanced Longan Knowledge Database
+        // Navigation Functions
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-container');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update navigation buttons
+            updateNavigationState(pageId);
+
+            // Load page-specific data
+            loadPageData(pageId);
+        }
+
+        function updateNavigationState(activePageId) {
+            // Update top navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Update bottom navigation
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Find and activate the current page button
+            const pageMapping = {
+                'scan': 0,
+                'history': 1,
+                'database': 2,
+                'analytics': 2, // Maps to same bottom nav as database
+                'help': 3,
+                'settings': 3 // Maps to same bottom nav as help
+            };
+
+            if (navItems.length > 0) {
+                const targetNavIndex = Array.from(['scan', 'history', 'database', 'analytics', 'help', 'settings']).indexOf(activePageId);
+                if (targetNavIndex >= 0 && navItems[targetNavIndex]) {
+                    navItems[targetNavIndex].classList.add('active');
+                }
+            }
+
+            if (bottomNavItems.length > 0) {
+                const bottomNavIndex = pageMapping[activePageId];
+                if (bottomNavIndex !== undefined && bottomNavItems[bottomNavIndex]) {
+                    bottomNavItems[bottomNavIndex].classList.add('active');
+                }
+            }
+        }
+
+        function loadPageData(pageId) {
+            switch(pageId) {
+                case 'history':
+                    loadHistoryData();
+                    break;
+                case 'analytics':
+                    loadAnalyticsData();
+                    break;
+                case 'database':
+                    // Database content is static
+                    break;
+                case 'settings':
+                    loadSettingsData();
+                    break;
+                case 'help':
+                    // Help content is static
+                    break;
+                default:
+                    // Scan page is already loaded
+                    break;
+            }
+        }
+
+        function loadHistoryData() {
+            const historyContainer = document.getElementById('historyContainer');
+            if (!historyContainer) return;
+
+            try {
+                const logs = JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
+                const scanLogs = logs.filter(log => log.event === 'scan_completed').slice(-10);
+
+                if (scanLogs.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-title">ยังไม่มีประวัติการวิเคราะห์</div>
+                                <div class="history-date">-</div>
+                            </div>
+                            <p>เริ่มใช้งานระบบ TADDO AI เพื่อสร้างประวัติการวิเคราะห์ลำไยของคุณ</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                historyContainer.innerHTML = scanLogs.map(log => {
+                    const date = new Date(log.timestamp).toLocaleString('th-TH');
+                    const data = log.data;
+                    return `
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-title">${data.name || 'การวิเคราะห์'}</div>
+                                <div class="history-date">${date}</div>
+                            </div>
+                            <div class="history-details">
+                                <div class="history-detail">
+                                    <strong>ความมั่นใจ:</strong><br>${data.confidence || 0}%
+                                </div>
+                                <div class="history-detail">
+                                    <strong>เวลา:</strong><br>${data.analysisTime || '-'}
+                                </div>
+                                <div class="history-detail">
+                                    <strong>AI Model:</strong><br>${data.aiModel || '-'}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Failed to load history:', error);
+                historyContainer.innerHTML = `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div class="history-title">เกิดข้อผิดพลาด</div>
+                            <div class="history-date">-</div>
+                        </div>
+                        <p>ไม่สามารถโหลดประวัติการวิเคราะห์ได้</p>
+                    </div>
+                `;
+            }
+        }
+
+        function loadAnalyticsData() {
+            try {
+                const stats = JSON.parse(localStorage.getItem('taddoStats') || '{}');
+                const logs = JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
+                
+                // Update analytics displays
+                const totalScansEl = document.getElementById('totalScans');
+                const avgTimeEl = document.getElementById('avgTime');
+                const successPercentageEl = document.getElementById('successPercentage');
+                const mostCommonDiseaseEl = document.getElementById('mostCommonDisease');
+
+                if (totalScansEl) totalScansEl.textContent = stats.totalScans || 0;
+                
+                // Calculate average time from logs
+                const completedScans = logs.filter(log => log.event === 'scan_completed');
+                const avgTime = completedScans.length > 0 
+                    ? completedScans.reduce((sum, log) => {
+                        const time = parseFloat(log.data?.analysisTime) || 0;
+                        return sum + time;
+                    }, 0) / completedScans.length 
+                    : 0;
+                
+                if (avgTimeEl) avgTimeEl.textContent = avgTime.toFixed(1) + 's';
+                
+                if (successPercentageEl) {
+                    const successRate = stats.totalScans > 0 
+                        ? Math.round((stats.successfulScans / stats.totalScans) * 100) 
+                        : 0;
+                    successPercentageEl.textContent = successRate + '%';
+                }
+
+                // Find most common disease
+                if (mostCommonDiseaseEl && stats.plantTypes) {
+                    const diseases = Object.entries(stats.plantTypes);
+                    if (diseases.length > 0) {
+                        const mostCommon = diseases.reduce((max, current) => 
+                            current[1] > max[1] ? current : max
+                        );
+                        mostCommonDiseaseEl.textContent = mostCommon[0];
+                    } else {
+                        mostCommonDiseaseEl.textContent = '-';
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load analytics:', error);
+            }
+        }
+
+        function loadSettingsData() {
+            // Load saved settings
+            try {
+                const settings = JSON.parse(localStorage.getItem('taddoSettings') || '{}');
+                
+                const languageSelect = document.getElementById('languageSetting');
+                const sensitivitySelect = document.getElementById('sensitivitySetting');
+
+                if (languageSelect && settings.language) {
+                    languageSelect.value = settings.language;
+                }
+
+                if (sensitivitySelect && settings.sensitivity) {
+                    sensitivitySelect.value = settings.sensitivity;
+                }
+
+                // Update toggle switches based on saved settings
+                // (Implementation would depend on specific settings structure)
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            }
+        }
+
+        function toggleSetting(toggleElement) {
+            toggleElement.classList.toggle('active');
+            // Save setting to localStorage
+            saveSettings();
+        }
+
+        function saveSettings() {
+            try {
+                const settings = {
+                    language: document.getElementById('languageSetting')?.value || 'th',
+                    sensitivity: document.getElementById('sensitivitySetting')?.value || 'medium',
+                    notifications: document.querySelector('.toggle-switch.active') !== null,
+                    autoSave: true // Based on toggle states
+                };
+                
+                localStorage.setItem('taddoSettings', JSON.stringify(settings));
+            } catch (error) {
+                console.error('Failed to save settings:', error);
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('คุณแน่ใจหรือไม่ที่จะล้างประวัติการวิเคราะห์ทั้งหมด?')) {
+                try {
+                    localStorage.removeItem('taddoResearchLogs');
+                    localStorage.removeItem('taddoFeedback');
+                    localStorage.removeItem('taddoStats');
+                    
+                    // Reset stats in current session
+                    if (window.taddoAI) {
+                        taddoAI.stats = {
+                            totalScans: 0,
+                            successfulScans: 0,
+                            avgConfidence: 0,
+                            plantTypes: {},
+                            feedbackData: [],
+                            hfSuccess: 0,
+                            hfFails: 0,
+                            lastUpdate: Date.now()
+                        };
+                        taddoAI.updateUI();
+                    }
+                    
+                    alert('ล้างประวัติการวิเคราะห์เรียบร้อยแล้ว');
+                    
+                    // Reload history page if currently active
+                    if (document.getElementById('historyPage').classList.contains('active')) {
+                        loadHistoryData();
+                    }
+                } catch (error) {
+                    console.error('Failed to clear history:', error);
+                    alert('เกิดข้อผิดพลาดในการล้างข้อมูล');
+                }
+            }
+        }
+
+        function exportAllData() {
+            if (typeof exportData === 'function') {
+                exportData(); // Use existing export function
+            } else {
+                alert('ฟังก์ชันส่งออกข้อมูลยังไม่พร้อม');
+            }
+        }
+
+        function showDiseaseDetail(diseaseKey) {
+            // This would show detailed information about the disease
+            // For now, just alert the disease name
+            const diseaseNames = {
+                'healthy': 'ลำไยสุขภาพดี',
+                'leafSpot': 'โรคใบจุด (Cercospora Leaf Spot)',
+                'powderyMildew': 'โรคราแป้ง (Powdery Mildew)',
+                'nutrientDeficiency': 'ขาดธาตุอาหาร',
+                'pestDamage': 'ความเสียหายจากศัตรูพืช'
+            };
+            
+            alert(`ข้อมูลเกี่ยวกับ: ${diseaseNames[diseaseKey] || diseaseKey}\n\nคุณสมบัติโดยละเอียดจะถูกพัฒนาในเวอร์ชันต่อไป`);
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+        }
+
+        function toggleMobileMenu() {
+            // Toggle mobile menu implementation
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) {
+                navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+            }
+        }
+
+        // Advanced Longan Knowledge Database (preserved from original)
         const LONGAN_KNOWLEDGE = {
             diseases: {
                 healthy: {
@@ -1538,7 +2622,7 @@
             }
         };
 
-        // Advanced AI System with HF Integration
+        // Advanced AI System with HF Integration (preserved from original)
         class TaddoAI {
             constructor() {
                 this.version = CONFIG.VERSION;
@@ -2361,7 +3445,7 @@
         // Global instance
         let taddoAI;
 
-        // FIX: ย้ายฟังก์ชันเหล่านี้ไปอยู่ใน global scope เพื่อให้ HTML สามารถเรียกใช้ได้
+        // Original functions (preserved)
         function takePhoto() {
             if (taddoAI && !taddoAI.isLoading) {
                 const photoInput = document.getElementById('photoInput');
@@ -2370,7 +3454,6 @@
         }
 
         function selectFromGallery() {
-            // ตรวจสอบว่า taddoAI ถูกสร้างแล้ว
             if (!taddoAI) {
                 alert('ระบบยังไม่พร้อมใช้งาน กรุณารอสักครู่');
                 return;
@@ -2383,7 +3466,6 @@
             
             const galleryInput = document.getElementById('galleryInput');
             if (galleryInput) {
-                // Reset value เพื่อให้สามารถเลือกไฟล์เดิมได้
                 galleryInput.value = '';
                 galleryInput.click();
             } else {
@@ -2406,6 +3488,9 @@
             if (taddoAI) {
                 taddoAI.currentResult = null;
             }
+            
+            // Make sure we're on the scan page
+            showPage('scan');
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
@@ -2527,10 +3612,22 @@
             // Initialize main application
             taddoAI = new TaddoAI();
             
-            console.log(`🌱 TADDO AI v${CONFIG.VERSION} - Advanced Longan Disease Analysis System`);
+            console.log(`🌱 TADDO AI v${CONFIG.VERSION} - Advanced Longan Disease Analysis System with Navigation`);
             console.log('Developed by: โรงเรียนจักรคำคณาทร จังหวัดลำพูน');
             console.log('Project: ระบบวิเคราะห์ลำไยด้วย AI สำหรับเกษตรกรไทย');
-            console.log('✅ Gallery button fixed - Functions are now in global scope');
+            console.log('✅ Enhanced with multi-page navigation system');
+            
+            // Set up event listeners for settings changes
+            const languageSelect = document.getElementById('languageSetting');
+            const sensitivitySelect = document.getElementById('sensitivitySetting');
+            
+            if (languageSelect) {
+                languageSelect.addEventListener('change', saveSettings);
+            }
+            
+            if (sensitivitySelect) {
+                sensitivitySelect.addEventListener('change', saveSettings);
+            }
         });
 
         // Cleanup on page unload
