@@ -1323,7 +1323,6 @@
             MAX_IMAGE_SIZE: 1200,
             IMAGE_QUALITY: 0.85,
             VERSION: '2.1.0',
-            // ใส่ Hugging Face API Key ตรงนี้
             HF_API_KEY: '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',
             HF_MODELS: [
                 'microsoft/resnet-50',
@@ -1551,30 +1550,55 @@
                 this.isLoading = false;
                 this.aiMode = 'offline';
                 this.hfApiKey = CONFIG.HF_API_KEY;
+                this.currentImageURL = null; // FIX: เพิ่มตัวแปรเก็บ URL ของรูปปัจจุบัน
+                this.currentOptimizedURL = null; // FIX: เพิ่มตัวแปรสำหรับ optimized image
+                this.onlineListener = null; // FIX: เก็บ reference สำหรับ event listener
+                this.offlineListener = null; // FIX: เก็บ reference สำหรับ event listener
                 
                 this.init();
             }
 
-            init() {
+            async init() {
                 this.updateUI();
                 this.attachEventListeners();
-                this.testHuggingFaceConnection();
+                await this.testHuggingFaceConnection(); // FIX: เพิ่ม await
                 
-                // Check online status
-                window.addEventListener('online', () => {
+                // FIX: เก็บ listeners ไว้เพื่อให้สามารถ remove ได้
+                this.onlineListener = () => {
                     this.showMessage('✅ เชื่อมต่ออินเทอร์เน็ตแล้ว', 'success');
                     if (this.hfApiKey && this.hfApiKey !== 'YOUR_HUGGING_FACE_API_KEY_HERE') {
                         this.testHuggingFaceConnection();
                     }
-                });
-                window.addEventListener('offline', () => {
+                };
+                
+                this.offlineListener = () => {
                     this.showMessage('📡 ทำงานในโหมดออฟไลน์', 'warning');
                     this.setAIMode('offline');
-                });
+                };
+                
+                window.addEventListener('online', this.onlineListener);
+                window.addEventListener('offline', this.offlineListener);
+            }
+
+            // FIX: Method สำหรับ cleanup
+            cleanup() {
+                if (this.onlineListener) {
+                    window.removeEventListener('online', this.onlineListener);
+                }
+                if (this.offlineListener) {
+                    window.removeEventListener('offline', this.offlineListener);
+                }
+                if (this.currentImageURL) {
+                    URL.revokeObjectURL(this.currentImageURL);
+                }
+                if (this.currentOptimizedURL) {
+                    URL.revokeObjectURL(this.currentOptimizedURL);
+                }
             }
 
             async testHuggingFaceConnection() {
                 const indicator = document.getElementById('aiModeIndicator');
+                if (!indicator) return; // FIX: ตรวจสอบว่า element มีอยู่
                 
                 if (!this.hfApiKey || this.hfApiKey === 'YOUR_HUGGING_FACE_API_KEY_HERE') {
                     this.setAIMode('offline');
@@ -1610,6 +1634,7 @@
             setAIMode(mode) {
                 this.aiMode = mode;
                 const indicator = document.getElementById('aiModeIndicator');
+                if (!indicator) return; // FIX: ตรวจสอบว่า element มีอยู่
                 
                 switch(mode) {
                     case 'hybrid':
@@ -1640,30 +1665,59 @@
             }
 
             loadStats() {
-                return JSON.parse(localStorage.getItem('taddoStats') || JSON.stringify({
-                    totalScans: 0,
-                    successfulScans: 0,
-                    avgConfidence: 0,
-                    plantTypes: {},
-                    feedbackData: [],
-                    hfSuccess: 0,
-                    hfFails: 0,
-                    lastUpdate: Date.now()
-                }));
+                try {
+                    return JSON.parse(localStorage.getItem('taddoStats') || JSON.stringify({
+                        totalScans: 0,
+                        successfulScans: 0,
+                        avgConfidence: 0,
+                        plantTypes: {},
+                        feedbackData: [],
+                        hfSuccess: 0,
+                        hfFails: 0,
+                        lastUpdate: Date.now()
+                    }));
+                } catch (error) {
+                    console.error('Failed to load stats:', error);
+                    return {
+                        totalScans: 0,
+                        successfulScans: 0,
+                        avgConfidence: 0,
+                        plantTypes: {},
+                        feedbackData: [],
+                        hfSuccess: 0,
+                        hfFails: 0,
+                        lastUpdate: Date.now()
+                    };
+                }
             }
 
             saveStats() {
-                this.stats.lastUpdate = Date.now();
-                localStorage.setItem('taddoStats', JSON.stringify(this.stats));
+                try {
+                    this.stats.lastUpdate = Date.now();
+                    localStorage.setItem('taddoStats', JSON.stringify(this.stats));
+                } catch (error) {
+                    console.error('Failed to save stats:', error);
+                    if (error.name === 'QuotaExceededError') {
+                        this.showMessage('พื้นที่เก็บข้อมูลเต็ม กรุณาล้างข้อมูลเก่า', 'warning');
+                    }
+                }
             }
 
             updateUI() {
-                document.getElementById('scanCount').textContent = this.stats.totalScans;
-                document.getElementById('avgAccuracy').textContent = Math.round(this.stats.avgConfidence) + '%';
-                const successRate = this.stats.totalScans > 0 
-                    ? Math.round((this.stats.successfulScans / this.stats.totalScans) * 100) 
-                    : 0;
-                document.getElementById('successRate').textContent = successRate + '%';
+                // FIX: ตรวจสอบว่า elements มีอยู่ก่อนอัพเดต
+                const scanCountEl = document.getElementById('scanCount');
+                const avgAccuracyEl = document.getElementById('avgAccuracy');
+                const successRateEl = document.getElementById('successRate');
+                
+                if (scanCountEl) scanCountEl.textContent = this.stats.totalScans;
+                if (avgAccuracyEl) avgAccuracyEl.textContent = Math.round(this.stats.avgConfidence) + '%';
+                
+                if (successRateEl) {
+                    const successRate = this.stats.totalScans > 0 
+                        ? Math.round((this.stats.successfulScans / this.stats.totalScans) * 100) 
+                        : 0;
+                    successRateEl.textContent = successRate + '%';
+                }
             }
 
             async handlePhoto(event) {
@@ -1675,7 +1729,7 @@
                     return;
                 }
 
-                if (file.size > 10 * 1024 * 1024) { // 10MB
+                if (file.size > 10 * 1024 * 1024) {
                     this.showMessage('ไฟล์รูปภาพมีขนาดใหญ่เกินไป (สูงสุด 10MB)', 'error');
                     return;
                 }
@@ -1689,18 +1743,13 @@
                         aiMode: this.aiMode
                     });
 
-                    // Optimize image
                     const optimizedFile = await this.optimizeImage(file);
                     this.updateProgress(30, 'เตรียมข้อมูลสำหรับ AI...');
 
-                    // Analyze with hybrid AI system
                     const result = await this.analyzeWithHybridAI(optimizedFile);
                     this.updateProgress(100, 'วิเคราะห์เสร็จสิ้น');
 
-                    // Update stats
                     this.updateStats(result);
-                    
-                    // Show result
                     this.showResult(result, optimizedFile);
                     this.logger.log('scan_completed', result);
 
@@ -1803,7 +1852,6 @@
                     hfConfidence = Math.round(topResult.score * 100);
                     const label = topResult.label.toLowerCase();
                     
-                    // Enhanced keyword matching
                     for (const [diseaseKey, disease] of Object.entries(LONGAN_KNOWLEDGE.diseases)) {
                         if (disease.keywords && disease.keywords.length > 0) {
                             const matchCount = disease.keywords.filter(keyword => 
@@ -1818,7 +1866,6 @@
                         }
                     }
 
-                    // General classification fallbacks
                     if (bestMatch === 'unknown') {
                         if (label.includes('plant') || label.includes('green') || label.includes('leaf')) {
                             bestMatch = 'healthy';
@@ -1925,6 +1972,11 @@
                     const ctx = canvas.getContext('2d');
 
                     img.onload = () => {
+                        // FIX: Revoke old URL after image loaded
+                        if (this.currentOptimizedURL) {
+                            URL.revokeObjectURL(this.currentOptimizedURL);
+                        }
+
                         let { width, height } = img;
                         const maxSize = CONFIG.MAX_IMAGE_SIZE;
 
@@ -1949,18 +2001,32 @@
                     };
 
                     img.onerror = reject;
-                    img.src = URL.createObjectURL(file);
+                    
+                    // Create URL for optimization
+                    this.currentOptimizedURL = URL.createObjectURL(file);
+                    img.src = this.currentOptimizedURL;
                 });
             }
 
             showResult(result, imageFile) {
                 this.currentResult = result;
 
+                // FIX: Revoke old URL before creating new one
+                if (this.currentImageURL) {
+                    URL.revokeObjectURL(this.currentImageURL);
+                }
+                
+                // Create new URL
+                this.currentImageURL = URL.createObjectURL(imageFile);
+                
                 const img = document.getElementById('resultImage');
-                img.src = URL.createObjectURL(imageFile);
-                img.alt = `วิเคราะห์ลำไย - ${result.name}`;
+                if (img) {
+                    img.src = this.currentImageURL;
+                    img.alt = `วิเคราะห์ลำไย - ${result.name}`;
+                }
 
-                document.getElementById('plantName').textContent = result.name;
+                const plantNameEl = document.getElementById('plantName');
+                if (plantNameEl) plantNameEl.textContent = result.name;
                 
                 let details = `${result.scientificName} | วิเคราะห์ใน ${result.analysisTime}<br>`;
                 details += `ID: ${result.analysisId} | ${new Date(result.timestamp).toLocaleString('th-TH')}<br>`;
@@ -1972,13 +2038,16 @@
                     details += `ประมวลผลด้วย ${result.processingNodes} โหนด`;
                 }
                 
-                document.getElementById('plantDetails').innerHTML = details;
+                const plantDetailsEl = document.getElementById('plantDetails');
+                if (plantDetailsEl) plantDetailsEl.innerHTML = details;
 
                 const confidenceEl = document.getElementById('confidence');
-                confidenceEl.textContent = `${result.confidence}%`;
-                confidenceEl.className = 'confidence';
-                if (result.confidence < 50) confidenceEl.classList.add('very-low');
-                else if (result.confidence < 75) confidenceEl.classList.add('low');
+                if (confidenceEl) {
+                    confidenceEl.textContent = `${result.confidence}%`;
+                    confidenceEl.className = 'confidence';
+                    if (result.confidence < 50) confidenceEl.classList.add('very-low');
+                    else if (result.confidence < 75) confidenceEl.classList.add('low');
+                }
 
                 if (result.hfResult) {
                     this.showHFAnalysis(result.hfResult, result.hfModel, result.hfConfidence);
@@ -1993,16 +2062,28 @@
                     </div>
                 `).join('');
                 
-                document.getElementById('cuttingPoints').innerHTML = treatments;
+                const cuttingPointsEl = document.getElementById('cuttingPoints');
+                if (cuttingPointsEl) cuttingPointsEl.innerHTML = treatments;
 
                 const resultEl = document.getElementById('result');
-                resultEl.classList.add('show');
-                resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (resultEl) {
+                    resultEl.classList.add('show');
+                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // FIX: Reset feedback buttons
+                const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
+                feedbackButtons.forEach(btn => {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                });
             }
 
             showHFAnalysis(hfResult, modelName, hfConfidence) {
                 const hfSection = document.getElementById('hfAnalysis');
                 const hfResults = document.getElementById('hfResults');
+                
+                if (!hfSection || !hfResults) return; // FIX: ตรวจสอบว่า elements มีอยู่
                 
                 if (!hfResult || hfResult.length === 0) {
                     hfSection.style.display = 'none';
@@ -2028,6 +2109,9 @@
             }
 
             showTechnicalDetails(details) {
+                const technicalDetailsEl = document.getElementById('technicalDetails');
+                if (!technicalDetailsEl) return; // FIX: ตรวจสอบว่า element มีอยู่
+
                 const technicalSection = document.createElement('div');
                 technicalSection.id = 'technicalDetailsSection';
                 technicalSection.className = 'technical-details';
@@ -2066,8 +2150,8 @@
                     </div>
                 `;
                 
-                document.getElementById('technicalDetails').innerHTML = '';
-                document.getElementById('technicalDetails').appendChild(technicalSection);
+                technicalDetailsEl.innerHTML = '';
+                technicalDetailsEl.appendChild(technicalSection);
             }
 
             updateStats(result) {
@@ -2087,21 +2171,32 @@
 
             showLoading() {
                 this.isLoading = true;
-                document.getElementById('loading').classList.add('show');
-                document.getElementById('result').classList.remove('show');
-                document.getElementById('cameraBtn').disabled = true;
+                const loadingEl = document.getElementById('loading');
+                const resultEl = document.getElementById('result');
+                const cameraBtnEl = document.getElementById('cameraBtn');
+                
+                if (loadingEl) loadingEl.classList.add('show');
+                if (resultEl) resultEl.classList.remove('show');
+                if (cameraBtnEl) cameraBtnEl.disabled = true;
+                
                 this.updateProgress(0, 'เริ่มต้นการวิเคราะห์...');
             }
 
             hideLoading() {
                 this.isLoading = false;
-                document.getElementById('loading').classList.remove('show');
-                document.getElementById('cameraBtn').disabled = false;
+                const loadingEl = document.getElementById('loading');
+                const cameraBtnEl = document.getElementById('cameraBtn');
+                
+                if (loadingEl) loadingEl.classList.remove('show');
+                if (cameraBtnEl) cameraBtnEl.disabled = false;
             }
 
             updateProgress(percent, text) {
-                document.getElementById('progressFill').style.width = percent + '%';
-                if (text) document.getElementById('loadingText').textContent = text;
+                const progressFillEl = document.getElementById('progressFill');
+                const loadingTextEl = document.getElementById('loadingText');
+                
+                if (progressFillEl) progressFillEl.style.width = percent + '%';
+                if (text && loadingTextEl) loadingTextEl.textContent = text;
             }
 
             showMessage(message, type = 'info') {
@@ -2110,12 +2205,14 @@
                 div.innerHTML = `<strong>${this.getTypeIcon(type)}</strong> ${message}`;
                 
                 const container = document.querySelector('.container');
-                container.insertBefore(div, container.firstChild);
-                
-                setTimeout(() => {
-                    div.style.opacity = '0';
-                    setTimeout(() => div.remove(), 300);
-                }, 4000);
+                if (container) {
+                    container.insertBefore(div, container.firstChild);
+                    
+                    setTimeout(() => {
+                        div.style.opacity = '0';
+                        setTimeout(() => div.remove(), 300);
+                    }, 4000);
+                }
             }
 
             getTypeIcon(type) {
@@ -2136,7 +2233,6 @@
                 }
             }
 
-            // NEW: Handle feedback method added
             handleFeedback(isCorrect) {
                 if (this.currentResult && this.feedback) {
                     this.feedback.collectFeedback(isCorrect, this.currentResult);
@@ -2174,18 +2270,27 @@
             }
 
             saveLogs() {
-                const existingLogs = JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
-                const allLogs = [...existingLogs, ...this.logs];
-                const recentLogs = allLogs.slice(-100);
-                
-                localStorage.setItem('taddoResearchLogs', JSON.stringify(recentLogs));
-                this.logs = [];
+                try {
+                    const existingLogs = JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
+                    const allLogs = [...existingLogs, ...this.logs];
+                    const recentLogs = allLogs.slice(-100);
+                    
+                    localStorage.setItem('taddoResearchLogs', JSON.stringify(recentLogs));
+                    this.logs = [];
+                } catch (error) {
+                    console.error('Failed to save logs:', error);
+                    this.logs = []; // Clear logs even if save failed
+                }
             }
 
             exportLogs() {
                 this.saveLogs();
-                const allLogs = JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
-                return allLogs;
+                try {
+                    return JSON.parse(localStorage.getItem('taddoResearchLogs') || '[]');
+                } catch (error) {
+                    console.error('Failed to export logs:', error);
+                    return [];
+                }
             }
         }
 
@@ -2202,14 +2307,18 @@
                     aiMode: taddoAI?.aiMode || 'unknown'
                 };
 
-                const allFeedback = JSON.parse(localStorage.getItem('taddoFeedback') || '[]');
-                allFeedback.push(feedback);
-                
-                const recentFeedback = allFeedback.slice(-50);
-                localStorage.setItem('taddoFeedback', JSON.stringify(recentFeedback));
+                try {
+                    const allFeedback = JSON.parse(localStorage.getItem('taddoFeedback') || '[]');
+                    allFeedback.push(feedback);
+                    
+                    const recentFeedback = allFeedback.slice(-50);
+                    localStorage.setItem('taddoFeedback', JSON.stringify(recentFeedback));
 
-                this.showFeedbackThankYou(isCorrect);
-                this.updateAccuracyStats(isCorrect);
+                    this.showFeedbackThankYou(isCorrect);
+                    this.updateAccuracyStats(isCorrect);
+                } catch (error) {
+                    console.error('Failed to save feedback:', error);
+                }
             }
 
             showFeedbackThankYou(isCorrect) {
@@ -2218,6 +2327,14 @@
                     : '🔍 ขอบคุณสำหรับข้อมูล เราจะนำไปพัฒนาต่อ';
                 
                 taddoAI.showMessage(message, 'success');
+                
+                // FIX: Disable feedback buttons after submission
+                const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
+                feedbackButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                });
             }
 
             updateAccuracyStats(isCorrect) {
@@ -2241,7 +2358,12 @@
             }
 
             exportFeedback() {
-                return JSON.parse(localStorage.getItem('taddoFeedback') || '[]');
+                try {
+                    return JSON.parse(localStorage.getItem('taddoFeedback') || '[]');
+                } catch (error) {
+                    console.error('Failed to export feedback:', error);
+                    return [];
+                }
             }
         }
 
@@ -2251,18 +2373,21 @@
         // Global functions
         function takePhoto() {
             if (taddoAI && !taddoAI.isLoading) {
-                document.getElementById('photoInput').click();
+                const photoInput = document.getElementById('photoInput');
+                if (photoInput) photoInput.click();
             }
         }
 
         function selectFromGallery() {
             if (taddoAI && !taddoAI.isLoading) {
-                document.getElementById('galleryInput').click();
+                const galleryInput = document.getElementById('galleryInput');
+                if (galleryInput) galleryInput.click();
             }
         }
 
         function newScan() {
-            document.getElementById('result').classList.remove('show');
+            const resultEl = document.getElementById('result');
+            if (resultEl) resultEl.classList.remove('show');
             
             // Reset feedback buttons
             const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
@@ -2330,6 +2455,15 @@
         }
 
         function submitFeedback(isCorrect) {
+            // FIX: ตรวจสอบว่าปุ่มถูก disable แล้วหรือยัง
+            const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
+            const isAlreadySubmitted = Array.from(feedbackButtons).some(btn => btn.disabled);
+            
+            if (isAlreadySubmitted) {
+                taddoAI?.showMessage('ส่งความคิดเห็นไปแล้ว', 'warning');
+                return;
+            }
+            
             if (taddoAI?.currentResult && taddoAI?.feedback) {
                 taddoAI.handleFeedback(isCorrect);
             }
@@ -2363,7 +2497,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                URL.revokeObjectURL(url); // FIX: Revoke URL after download
                 
                 taddoAI.showMessage('📊 ส่งออกข้อมูลสำเร็จ', 'success');
             } catch (error) {
@@ -2394,18 +2528,12 @@
             console.log('Project: ระบบวิเคราะห์ลำไยด้วย AI สำหรับเกษตรกรไทย');
         });
 
-        // Service Worker Registration (for PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
+        // FIX: Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (taddoAI) {
+                taddoAI.cleanup();
+            }
+        });
     </script>
 </body>
 </html>
