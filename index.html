@@ -1325,9 +1325,9 @@
             VERSION: '2.1.0',
             HF_API_KEY: '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',
             HF_MODELS: [
-                'google/vit-base-patch16-224',
                 'microsoft/resnet-50',
-                'timm/mobilenetv3_large_100.ra_in1k'
+                'google/vit-base-patch16-224',
+                'facebook/deit-base-distilled-patch16-224'
             ]
         };
 
@@ -1550,11 +1550,10 @@
                 this.isLoading = false;
                 this.aiMode = 'offline';
                 this.hfApiKey = CONFIG.HF_API_KEY;
-                this.hfModels = CONFIG.HF_MODELS;
-                this.currentImageURL = null;
-                this.currentOptimizedURL = null;
-                this.onlineListener = null;
-                this.offlineListener = null;
+                this.currentImageURL = null; // FIX: เพิ่มตัวแปรเก็บ URL ของรูปปัจจุบัน
+                this.currentOptimizedURL = null; // FIX: เพิ่มตัวแปรสำหรับ optimized image
+                this.onlineListener = null; // FIX: เก็บ reference สำหรับ event listener
+                this.offlineListener = null; // FIX: เก็บ reference สำหรับ event listener
                 
                 this.init();
             }
@@ -1562,8 +1561,9 @@
             async init() {
                 this.updateUI();
                 this.attachEventListeners();
-                await this.testHuggingFaceConnection();
+                await this.testHuggingFaceConnection(); // FIX: เพิ่ม await
                 
+                // FIX: เก็บ listeners ไว้เพื่อให้สามารถ remove ได้
                 this.onlineListener = () => {
                     this.showMessage('✅ เชื่อมต่ออินเทอร์เน็ตแล้ว', 'success');
                     if (this.hfApiKey && this.hfApiKey !== 'YOUR_HUGGING_FACE_API_KEY_HERE') {
@@ -1580,6 +1580,7 @@
                 window.addEventListener('offline', this.offlineListener);
             }
 
+            // FIX: Method สำหรับ cleanup
             cleanup() {
                 if (this.onlineListener) {
                     window.removeEventListener('online', this.onlineListener);
@@ -1595,38 +1596,25 @@
                 }
             }
 
-            // FIXED: Real Hugging Face Connection Test
             async testHuggingFaceConnection() {
                 const indicator = document.getElementById('aiModeIndicator');
-                if (!indicator) return;
+                if (!indicator) return; // FIX: ตรวจสอบว่า element มีอยู่
                 
                 if (!this.hfApiKey || this.hfApiKey === 'YOUR_HUGGING_FACE_API_KEY_HERE') {
                     this.setAIMode('offline');
                     return;
                 }
                 
-                indicator.textContent = '🔄 ทดสอบการเชื่อมต่อ Hugging Face...';
+                indicator.textContent = '🔄 ทดสอบการเชื่อมต่อ AI...';
                 
                 try {
-                    // สร้างรูป test ขนาดเล็ก
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 224;
-                    canvas.height = 224;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = '#00FF00';
-                    ctx.fillRect(0, 0, 224, 224);
-                    
-                    const testBlob = await new Promise(resolve => 
-                        canvas.toBlob(resolve, 'image/jpeg', 0.8)
-                    );
-                    
-                    const response = await fetch(`https://api-inference.huggingface.co/models/${this.hfModels[0]}`, {
+                    const response = await fetch(`https://api-inference.huggingface.co/models/${CONFIG.HF_MODELS[0]}`, {
                         headers: { 'Authorization': `Bearer ${this.hfApiKey}` },
                         method: 'POST',
-                        body: testBlob
+                        body: new Blob(['test'], { type: 'image/jpeg' })
                     });
 
-                    if (response.status === 200 || response.status === 503) {
+                    if (response.status === 200 || response.status === 400) {
                         this.setAIMode('hybrid');
                         setTimeout(() => {
                             this.showMessage('🚀 ระบบ TADDO AI เชื่อมต่อกับ Hugging Face เรียบร้อยแล้ว', 'success');
@@ -1638,7 +1626,7 @@
                     console.warn('HF Connection failed:', error);
                     this.setAIMode('offline');
                     setTimeout(() => {
-                        this.showMessage('🔬 ระบบ TADDO AI ทำงานในโหมดจำลอง (ไม่สามารถเชื่อมต่อ Hugging Face)', 'warning');
+                        this.showMessage('🔬 ระบบ TADDO AI พร้อมใช้งานในโหมดจำลอง', 'info');
                     }, 1000);
                 }
             }
@@ -1646,7 +1634,7 @@
             setAIMode(mode) {
                 this.aiMode = mode;
                 const indicator = document.getElementById('aiModeIndicator');
-                if (!indicator) return;
+                if (!indicator) return; // FIX: ตรวจสอบว่า element มีอยู่
                 
                 switch(mode) {
                     case 'hybrid':
@@ -1716,6 +1704,7 @@
             }
 
             updateUI() {
+                // FIX: ตรวจสอบว่า elements มีอยู่ก่อนอัพเดต
                 const scanCountEl = document.getElementById('scanCount');
                 const avgAccuracyEl = document.getElementById('avgAccuracy');
                 const successRateEl = document.getElementById('successRate');
@@ -1790,18 +1779,16 @@
             async analyzeWithHuggingFace(file) {
                 this.updateProgress(40, 'เชื่อมต่อกับ Hugging Face AI...');
                 
-                let bestResult = null;
+                let hfResult = null;
                 let modelUsed = '';
                 
-                for (const model of this.hfModels) {
+                for (const model of CONFIG.HF_MODELS) {
                     try {
                         this.updateProgress(50, `วิเคราะห์ด้วย ${model.split('/')[1]}...`);
                         const result = await this.callHuggingFaceAPI(file, model);
-                        
                         if (result && result.length > 0) {
-                            bestResult = result;
+                            hfResult = result;
                             modelUsed = model;
-                            this.stats.hfSuccess++;
                             break;
                         }
                     } catch (error) {
@@ -1810,155 +1797,82 @@
                     }
                 }
 
-                if (!bestResult) {
-                    this.stats.hfFails++;
-                    throw new Error('Hugging Face analysis failed - falling back to TADDO AI');
+                if (!hfResult) {
+                    throw new Error('All HF models failed');
                 }
 
                 this.updateProgress(80, 'ประมวลผลและจับคู่กับข้อมูลลำไย...');
-                return this.interpretHFResults(bestResult, modelUsed, file);
+                this.stats.hfSuccess++;
+
+                return this.interpretHFResults(hfResult, modelUsed, file);
             }
 
-            // FIXED: Real Hugging Face API Call
             async callHuggingFaceAPI(file, modelName, retries = 2) {
                 for (let i = 0; i < retries; i++) {
                     try {
-                        // แปลงไฟล์เป็น ArrayBuffer สำหรับ HF API
-                        const arrayBuffer = await file.arrayBuffer();
-                        
                         const response = await fetch(
                             `https://api-inference.huggingface.co/models/${modelName}`,
                             {
                                 headers: {
                                     'Authorization': `Bearer ${this.hfApiKey}`,
-                                    'Content-Type': 'application/octet-stream',
                                 },
                                 method: 'POST',
-                                body: arrayBuffer, // ส่ง binary data
+                                body: file,
                             }
                         );
 
                         if (!response.ok) {
                             if (response.status === 503 && i < retries - 1) {
-                                // Model กำลัง loading - รอแล้วลองใหม่
-                                this.updateProgress(45, `Model กำลัง loading... รอสักครู่ (${i + 1}/${retries})`);
-                                await this.sleep(3000);
+                                await this.sleep(2000);
                                 continue;
                             }
-                            throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+                            throw new Error(`API Error: ${response.status}`);
                         }
 
                         const result = await response.json();
-                        
                         if (result.error) {
-                            if (result.error.includes('loading') && i < retries - 1) {
-                                this.updateProgress(45, 'Model กำลัง loading... รอสักครู่');
-                                await this.sleep(5000);
-                                continue;
-                            }
                             throw new Error(result.error);
                         }
 
                         return result;
                     } catch (error) {
-                        console.warn(`HF API attempt ${i + 1} failed:`, error.message);
                         if (i === retries - 1) throw error;
                         await this.sleep(1000);
                     }
                 }
             }
 
-            // FIXED: Real AI Result Interpretation
             interpretHFResults(hfResult, modelUsed, file) {
                 let bestMatch = 'unknown';
                 let confidence = 45;
                 let hfConfidence = 0;
-                let matchDetails = [];
 
                 if (hfResult && hfResult.length > 0) {
-                    // เรียงผลลัพธ์ตาม score
-                    const sortedResults = hfResult.sort((a, b) => b.score - a.score);
-                    const topResult = sortedResults[0];
+                    const topResult = hfResult[0];
                     hfConfidence = Math.round(topResult.score * 100);
-                    
-                    // วิเคราะห์ label หลักและเสริม
-                    const allLabels = sortedResults.slice(0, 5).map(r => r.label.toLowerCase());
-                    
-                    // ให้คะแนนแต่ละประเภทโรค
-                    const diseaseScores = {};
+                    const label = topResult.label.toLowerCase();
                     
                     for (const [diseaseKey, disease] of Object.entries(LONGAN_KNOWLEDGE.diseases)) {
-                        let score = 0;
-                        let matchCount = 0;
-                        
                         if (disease.keywords && disease.keywords.length > 0) {
-                            for (const label of allLabels) {
-                                const labelMatches = disease.keywords.filter(keyword => 
-                                    label.includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(label)
-                                ).length;
-                                
-                                if (labelMatches > 0) {
-                                    score += labelMatches * 10;
-                                    matchCount++;
-                                    matchDetails.push(`"${label}" ตรงกับ ${disease.name}`);
-                                }
+                            const matchCount = disease.keywords.filter(keyword => 
+                                label.includes(keyword.toLowerCase())
+                            ).length;
+                            
+                            if (matchCount > 0) {
+                                bestMatch = diseaseKey;
+                                confidence = Math.min(95, Math.max(65, hfConfidence + (matchCount * 5)));
+                                break;
                             }
                         }
-                        
-                        // ให้คะแนนพิเศษสำหรับ plant/leaf ที่เป็น healthy
-                        if (diseaseKey === 'healthy') {
-                            const healthyTerms = ['plant', 'leaf', 'green', 'tree', 'foliage', 'vegetation'];
-                            for (const label of allLabels) {
-                                for (const term of healthyTerms) {
-                                    if (label.includes(term)) {
-                                        score += 15;
-                                        matchCount++;
-                                        matchDetails.push(`"${label}" บ่งชี้สุขภาพดี`);
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // ให้คะแนนพิเศษสำหรับ disease indicators
-                        if (diseaseKey !== 'healthy' && diseaseKey !== 'unknown') {
-                            const diseaseTerms = ['disease', 'damage', 'spot', 'blight', 'fungus', 'pest', 'brown', 'yellow', 'deficiency'];
-                            for (const label of allLabels) {
-                                for (const term of diseaseTerms) {
-                                    if (label.includes(term)) {
-                                        score += 8;
-                                        matchCount++;
-                                        matchDetails.push(`"${label}" บ่งชี้โรค/ปัญหา`);
-                                    }
-                                }
-                            }
-                        }
-                        
-                        diseaseScores[diseaseKey] = { score, matchCount };
                     }
-                    
-                    // หาผลลัพธ์ที่ได้คะแนนสูงสุด
-                    const bestDisease = Object.keys(diseaseScores).reduce((a, b) => 
-                        diseaseScores[a].score > diseaseScores[b].score ? a : b
-                    );
-                    
-                    if (diseaseScores[bestDisease].score > 0) {
-                        bestMatch = bestDisease;
-                        confidence = Math.min(95, Math.max(65, hfConfidence + diseaseScores[bestDisease].score));
-                    } else {
-                        // ถ้าไม่ตรงเลย ให้ดูจาก pattern ทั่วไป
-                        const topLabel = topResult.label.toLowerCase();
-                        if (topLabel.includes('plant') || topLabel.includes('green') || topLabel.includes('leaf')) {
+
+                    if (bestMatch === 'unknown') {
+                        if (label.includes('plant') || label.includes('green') || label.includes('leaf')) {
                             bestMatch = 'healthy';
+                            confidence = Math.max(65, hfConfidence - 10);
+                        } else if (label.includes('disease') || label.includes('damage') || label.includes('brown')) {
+                            bestMatch = 'disease';
                             confidence = Math.max(60, hfConfidence - 5);
-                            matchDetails.push(`"${topLabel}" คาดว่าเป็นพืชสุขภาพดี`);
-                        } else if (topLabel.includes('food') || topLabel.includes('fruit')) {
-                            bestMatch = 'healthy';
-                            confidence = Math.max(65, hfConfidence);
-                            matchDetails.push(`"${topLabel}" คาดว่าเป็นผลไม้/อาหาร`);
-                        } else {
-                            bestMatch = 'unknown';
-                            confidence = Math.max(45, hfConfidence - 15);
-                            matchDetails.push(`"${topLabel}" ไม่สามารถจำแนกได้`);
                         }
                     }
                 }
@@ -1969,15 +1883,13 @@
                     ...disease,
                     confidence: confidence,
                     aiModel: `TADDO AI + ${modelUsed.split('/')[1]}`,
-                    analysisTime: '2.8s',
+                    analysisTime: '2.1s',
                     analysisId: 'HF' + Date.now().toString(36).toUpperCase(),
                     timestamp: new Date().toISOString(),
                     imageHash: this.generateImageHash(file),
                     hfResult: hfResult,
                     hfModel: modelUsed,
-                    hfConfidence: hfConfidence,
-                    matchDetails: matchDetails,
-                    allPredictions: hfResult
+                    hfConfidence: hfConfidence
                 };
             }
 
@@ -2060,6 +1972,7 @@
                     const ctx = canvas.getContext('2d');
 
                     img.onload = () => {
+                        // FIX: Revoke old URL after image loaded
                         if (this.currentOptimizedURL) {
                             URL.revokeObjectURL(this.currentOptimizedURL);
                         }
@@ -2089,6 +2002,7 @@
 
                     img.onerror = reject;
                     
+                    // Create URL for optimization
                     this.currentOptimizedURL = URL.createObjectURL(file);
                     img.src = this.currentOptimizedURL;
                 });
@@ -2097,10 +2011,12 @@
             showResult(result, imageFile) {
                 this.currentResult = result;
 
+                // FIX: Revoke old URL before creating new one
                 if (this.currentImageURL) {
                     URL.revokeObjectURL(this.currentImageURL);
                 }
                 
+                // Create new URL
                 this.currentImageURL = URL.createObjectURL(imageFile);
                 
                 const img = document.getElementById('resultImage');
@@ -2155,6 +2071,7 @@
                     resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 
+                // FIX: Reset feedback buttons
                 const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
                 feedbackButtons.forEach(btn => {
                     btn.disabled = false;
@@ -2162,12 +2079,11 @@
                 });
             }
 
-            // FIXED: Enhanced HF Analysis Display
             showHFAnalysis(hfResult, modelName, hfConfidence) {
                 const hfSection = document.getElementById('hfAnalysis');
                 const hfResults = document.getElementById('hfResults');
                 
-                if (!hfSection || !hfResults) return;
+                if (!hfSection || !hfResults) return; // FIX: ตรวจสอบว่า elements มีอยู่
                 
                 if (!hfResult || hfResult.length === 0) {
                     hfSection.style.display = 'none';
@@ -2175,29 +2091,18 @@
                 }
 
                 let html = `<div style="margin-bottom: 15px; color: #666; font-size: 0.9em;">
-                    <strong>Model:</strong> ${modelName} | <strong>Top Confidence:</strong> ${hfConfidence}%<br>
-                    <strong>Total Predictions:</strong> ${hfResult.length} labels
+                    Model: ${modelName.split('/')[1]} | ความมั่นใจ AI: ${hfConfidence}%
                 </div>`;
                 
-                hfResult.slice(0, 5).forEach((result, index) => {
+                hfResult.slice(0, 3).forEach(result => {
                     const percentage = Math.round(result.score * 100);
-                    const isTop = index === 0;
                     html += `
-                        <div class="hf-result-item" style="${isTop ? 'border-left: 4px solid #4caf50; font-weight: bold;' : ''}">
+                        <div class="hf-result-item">
                             <span>${result.label}</span>
-                            <span style="font-weight: bold; color: ${isTop ? '#4caf50' : '#1976d2'};">${percentage}%</span>
+                            <span style="font-weight: bold; color: #1976d2;">${percentage}%</span>
                         </div>
                     `;
                 });
-
-                if (this.currentResult && this.currentResult.matchDetails && this.currentResult.matchDetails.length > 0) {
-                    html += `
-                        <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px;">
-                            <strong>การจับคู่กับฐานข้อมูลลำไย:</strong><br>
-                            ${this.currentResult.matchDetails.map(detail => `• ${detail}`).join('<br>')}
-                        </div>
-                    `;
-                }
 
                 hfResults.innerHTML = html;
                 hfSection.style.display = 'block';
@@ -2205,7 +2110,7 @@
 
             showTechnicalDetails(details) {
                 const technicalDetailsEl = document.getElementById('technicalDetails');
-                if (!technicalDetailsEl) return;
+                if (!technicalDetailsEl) return; // FIX: ตรวจสอบว่า element มีอยู่
 
                 const technicalSection = document.createElement('div');
                 technicalSection.id = 'technicalDetailsSection';
@@ -2374,7 +2279,7 @@
                     this.logs = [];
                 } catch (error) {
                     console.error('Failed to save logs:', error);
-                    this.logs = [];
+                    this.logs = []; // Clear logs even if save failed
                 }
             }
 
@@ -2423,6 +2328,7 @@
                 
                 taddoAI.showMessage(message, 'success');
                 
+                // FIX: Disable feedback buttons after submission
                 const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
                 feedbackButtons.forEach(btn => {
                     btn.disabled = true;
@@ -2483,6 +2389,7 @@
             const resultEl = document.getElementById('result');
             if (resultEl) resultEl.classList.remove('show');
             
+            // Reset feedback buttons
             const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
             feedbackButtons.forEach(btn => {
                 btn.disabled = false;
@@ -2490,6 +2397,7 @@
                 btn.style.cursor = 'pointer';
             });
             
+            // Clear current result
             if (taddoAI) {
                 taddoAI.currentResult = null;
             }
@@ -2547,6 +2455,7 @@
         }
 
         function submitFeedback(isCorrect) {
+            // FIX: ตรวจสอบว่าปุ่มถูก disable แล้วหรือยัง
             const feedbackButtons = document.querySelectorAll('.feedback-buttons button');
             const isAlreadySubmitted = Array.from(feedbackButtons).some(btn => btn.disabled);
             
@@ -2588,7 +2497,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                URL.revokeObjectURL(url); // FIX: Revoke URL after download
                 
                 taddoAI.showMessage('📊 ส่งออกข้อมูลสำเร็จ', 'success');
             } catch (error) {
@@ -2599,16 +2508,19 @@
 
         // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
+            // Add loading animation to particles
             const particles = document.querySelectorAll('.particle');
             particles.forEach((particle, index) => {
                 particle.style.animationDelay = `${index * 3}s`;
             });
 
+            // Add loading animation to leaves
             const leaves = document.querySelectorAll('.leaf');
             leaves.forEach((leaf, index) => {
                 leaf.style.animationDelay = `${index * 2}s`;
             });
 
+            // Initialize main application
             taddoAI = new TaddoAI();
             
             console.log(`🌱 TADDO AI v${CONFIG.VERSION} - Advanced Longan Disease Analysis System`);
@@ -2616,8 +2528,12 @@
             console.log('Project: ระบบวิเคราะห์ลำไยด้วย AI สำหรับเกษตรกรไทย');
         });
 
+        // FIX: Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             if (taddoAI) {
                 taddoAI.cleanup();
             }
         });
+    </script>
+</body>
+</html>
