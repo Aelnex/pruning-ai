@@ -2092,25 +2092,31 @@
                 <p style="text-align: center; line-height: 1.8;">
                     โรงเรียนจักรคำคณาทร จังหวัดลำพูน<br>
                     พัฒนาโดย: นายตฤณ ตันตระกูล และ นายภูศิลา กาสุ<br>
-                    อีเมล: manuiopface@gmail.com<br>
-                    โทรศัพท์: 063-852-3225
+                    อีเมล: taddo.ai@example.com<br>
+                    โทรศัพท์: 053-xxx-xxxx
                 </p>
             </div>
         </div>
     </div>
 
+    <!-- TensorFlow.js for real AI image processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.10.0/tf.min.js"></script>
     <script>
         // Configuration
         const CONFIG = {
             MAX_IMAGE_SIZE: 1200,
             IMAGE_QUALITY: 0.85,
-            VERSION: '2.1.0',
-            HF_API_KEY: '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',
+            VERSION: '2.2.0',
+            HF_API_KEY: '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',
             HF_MODELS: [
                 'microsoft/resnet-50',
                 'google/vit-base-patch16-224',
                 'facebook/deit-base-distilled-patch16-224'
-            ]
+            ],
+            // Real AI Processing Configuration
+            TENSORFLOW_MODEL_URL: 'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v3_small_100_224/classification/5/default/1',
+            ENABLE_REAL_AI: true,
+            AI_CONFIDENCE_THRESHOLD: 0.7
         };
 
         // Navigation Functions
@@ -3108,11 +3114,19 @@
                 let details = `${result.scientificName} | วิเคราะห์ใน ${result.analysisTime}<br>`;
                 details += `ID: ${result.analysisId} | ${new Date(result.timestamp).toLocaleString('th-TH')}<br>`;
                 
-                if (result.databaseMatches) {
-                    details += `เทียบข้อมูล ${result.databaseMatches} รายการ | `;
-                }
-                if (result.processingNodes) {
-                    details += `ประมวลผลด้วย ${result.processingNodes} โหนด`;
+                // Show enhanced analysis info if available
+                if (result.enhancedAnalysis && result.enhancedAnalysis.realAI) {
+                    details += `🤖 วิเคราะห์ด้วย AI ${result.enhancedAnalysis.modelsUsed} โมเดล | `;
+                    details += `คะแนนสุขภาพ: ${result.enhancedAnalysis.imageAnalysis.healthScore}/100<br>`;
+                    details += `สุขภาพโดยรวม: ${result.enhancedAnalysis.imageAnalysis.overallHealth} | `;
+                    details += `ความสว่าง: ${result.enhancedAnalysis.imageAnalysis.brightness}`;
+                } else {
+                    if (result.databaseMatches) {
+                        details += `เทียบข้อมูล ${result.databaseMatches} รายการ | `;
+                    }
+                    if (result.processingNodes) {
+                        details += `ประมวลผลด้วย ${result.processingNodes} โหนด`;
+                    }
                 }
                 
                 const plantDetailsEl = document.getElementById('plantDetails');
@@ -3126,8 +3140,11 @@
                     else if (result.confidence < 75) confidenceEl.classList.add('low');
                 }
 
+                // Show Hugging Face Analysis
                 if (result.hfResult) {
                     this.showHFAnalysis(result.hfResult, result.hfModel, result.hfConfidence);
+                } else if (result.enhancedAnalysis && result.enhancedAnalysis.realAI) {
+                    this.showEnhancedAnalysis(result.enhancedAnalysis);
                 }
 
                 this.showTechnicalDetails(result.technicalDetails);
@@ -3153,6 +3170,89 @@
                     btn.disabled = false;
                     btn.style.opacity = '1';
                 });
+            }
+
+            // NEW: Show Enhanced Analysis Results
+            showEnhancedAnalysis(enhancedAnalysis) {
+                const hfSection = document.getElementById('hfAnalysis');
+                const hfResults = document.getElementById('hfResults');
+                
+                if (!hfSection || !hfResults) return;
+                
+                const { consensus, imageAnalysis, diseaseIndicators } = enhancedAnalysis;
+                
+                let html = `<div style="margin-bottom: 15px; color: #666; font-size: 0.9em;">
+                    <strong>🧠 การวิเคราะห์ AI แบบ Multi-Model</strong><br>
+                    โมเดลที่ใช้: ${enhancedAnalysis.modelsUsed} โมเดล | ความมั่นใจเฉลี่ย: ${consensus.avgConfidence}%
+                </div>`;
+                
+                // Color Analysis Section
+                html += `
+                    <div style="background: #f8f9ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px;">📊 การวิเคราะห์สีและเนื้อสัมผัส</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                            <div style="text-align: center; padding: 8px; background: #e8f5e8; border-radius: 8px;">
+                                <div style="font-weight: bold; color: #2e7d32;">เขียว</div>
+                                <div>${imageAnalysis.colorDistribution.green}</div>
+                            </div>
+                            <div style="text-align: center; padding: 8px; background: #fff3e0; border-radius: 8px;">
+                                <div style="font-weight: bold; color: #f57c00;">เหลือง</div>
+                                <div>${imageAnalysis.colorDistribution.yellow}</div>
+                            </div>
+                            <div style="text-align: center; padding: 8px; background: #efebe9; border-radius: 8px;">
+                                <div style="font-weight: bold; color: #5d4037;">น้ำตาล</div>
+                                <div>${imageAnalysis.colorDistribution.brown}</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">
+                            สุขภาพโดยรวม: <strong>${imageAnalysis.overallHealth}</strong> | 
+                            คะแนน: <strong>${imageAnalysis.healthScore}/100</strong>
+                        </div>
+                    </div>
+                `;
+                
+                // Disease Indicators
+                if (diseaseIndicators && diseaseIndicators.length > 0) {
+                    html += `
+                        <div style="background: #fff8e1; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                            <div style="font-weight: bold; color: #f57c00; margin-bottom: 10px;">⚠️ ตัวชี้วัดความผิดปกติ</div>
+                            ${diseaseIndicators.map(indicator => `
+                                <div style="margin: 5px 0; padding: 5px 10px; background: rgba(255,152,0,0.1); border-left: 3px solid #ff9800; font-size: 0.9em;">
+                                    ${indicator}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                // AI Models Consensus
+                if (consensus.topLabels && consensus.topLabels.length > 0) {
+                    html += `
+                        <div style="background: #f0f7ff; padding: 15px; border-radius: 10px;">
+                            <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px;">🎯 ผลรวมจากโมเดล AI</div>
+                            ${consensus.topLabels.slice(0, 3).map(item => `
+                                <div style="display: flex; justify-content: space-between; margin: 5px 0; padding: 5px; background: white; border-radius: 5px;">
+                                    <span style="text-transform: capitalize;">${item.label}</span>
+                                    <span style="font-weight: bold; color: #1976d2;">${item.count} ครั้ง</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                hfResults.innerHTML = html;
+                hfSection.style.display = 'block';
+                
+                // Update title to show it's enhanced analysis
+                const hfTitle = document.querySelector('.hf-title');
+                if (hfTitle) {
+                    hfTitle.innerHTML = `
+                        🤖 การวิเคราะห์ AI ขั้นสูง (Enhanced Analysis)
+                        <div style="font-size: 0.8em; font-weight: normal; margin-top: 5px; opacity: 0.8;">
+                            ใช้เทคโนโลยี Computer Vision และ Multi-Model AI Analysis
+                        </div>
+                    `;
+                }
             }
 
             showHFAnalysis(hfResult, modelName, hfConfidence) {
